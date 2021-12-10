@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link href="/css/app.css" rel="stylesheet">
+		<script id='main' async defer type="module" src="/dist/src/main.js"></script>
+	</head>
+	<body>
+		<div id='grid_container'
+		 style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
+ unselectable="on"
+ onselectstart="return false;" 
+		></div>
+
+		<button id='go'>go</button>
+
+    <script>
+			const script = document.getElementById('main');
+
+			script.onload = () => {
+				window.main();
+			}
+    </script>
+	</body>
+</html>
