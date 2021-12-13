@@ -18,4 +18,7 @@ export type State = {
   currentAlgo?: IterableLazyDijkstra;
   currentLoop?: number;
   currentVisitedTile?: Tile;
+  speed: Speed;
 };
+
+export type Speed = "slow" | "medium" | "fast";

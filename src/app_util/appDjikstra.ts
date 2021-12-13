@@ -76,10 +76,22 @@ const walkToDest = (path: Point[]): void => {
     } else {
       window.clearInterval(walk);
     }
-  }, 100);
+  }, 30);
+};
+
+export const getSpeed = (): number => {
+  switch (state.speed) {
+    case "slow":
+      return 60;
+    case "medium":
+      return 30;
+    case "fast":
+      return 1;
+  }
 };
 
 export const startLooping = (algo: IterableLazyDijkstra): void => {
+  const speed = getSpeed();
   const loop = setInterval(() => {
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
@@ -95,7 +107,7 @@ export const startLooping = (algo: IterableLazyDijkstra): void => {
 
       walkToDest(path);
     }
-  }, 30);
+  }, speed);
 
   state.currentLoop = loop;
 };

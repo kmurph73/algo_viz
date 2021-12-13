@@ -10,4 +10,5 @@ export const state: State = {
   dragging: false,
   currentType: TileType.Wall,
   allowDiagonal: false,
+  speed: "medium",
 };
