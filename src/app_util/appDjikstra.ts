@@ -3,7 +3,8 @@ import {
   IterableLazyDijkstra,
 } from "../algos/IterableLazyDijkstra.js";
 import { grid, state } from "../constants.js";
-import { TileType } from "../grid/Grid.js";
+import { Tile, TileType } from "../grid/Grid.js";
+import { then } from "../util/util.js";
 
 type Point = {
   row: number;
@@ -71,24 +72,11 @@ export const startLooping = (algo: IterableLazyDijkstra): void => {
   const loop = setInterval(() => {
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
-    const klass = next.type === ActionType.Visit ? "red" : "blue";
 
     if (ActionType.Found === next.type) {
       clearInterval(loop);
     }
-
-    switch (next.type) {
-      case ActionType.Visit:
-        tile.div.classList.remove("blue");
-        tile.div.classList.add("red");
-        break;
-      case ActionType.Enqueued:
-        tile.div.classList.add("blue");
-      default:
-        break;
-    }
-
-    tile.div.classList.add(klass);
+    handleTick(tile, next.type);
   }, 30);
 
   state.currentLoop = loop;
@@ -115,6 +103,24 @@ const initDijkstra = (): IterableLazyDijkstra => {
   });
 };
 
+export const handleTick = (tile: Tile, action: ActionType): void => {
+  const classList = tile.td.classList;
+  if (action === ActionType.Visit) {
+    classList.remove("queued");
+    classList.add("currentnode");
+
+    if (state.currentVisitedTile) {
+      const cl = state.currentVisitedTile.td.classList;
+      cl.remove("currentnode");
+      cl.add("visited");
+    }
+
+    state.currentVisitedTile = tile;
+  } else {
+    classList.add("queued");
+  }
+};
+
 export const tick = (): void => {
   if (!state.currentAlgo) {
     state.currentAlgo = initDijkstra();
@@ -124,6 +130,5 @@ export const tick = (): void => {
 
   const next = algo.next();
   const tile = grid.atPoint(next.point)!;
-  const klass = next.type === ActionType.Visit ? "red" : "blue";
-  tile.div.classList.add(klass);
+  handleTick(tile, next.type);
 };

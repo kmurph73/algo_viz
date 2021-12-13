@@ -14,7 +14,7 @@ export const drawGrid = (): void => {
       const className = `${
         colCount === 0 || NumRows === rowCount ? "gutter" : "tile"
       }`;
-      html += `<td class="${className}"><div></div></td>`;
+      html += `<td class="${className}"></td>`;
       colCount += 1;
     }
 
@@ -32,13 +32,13 @@ export const drawGutterNumbers = (): void => {
   for (let row = 0; row <= NumRows; row++) {
     for (let col = 0; col <= NumColumns; col++) {
       if (row === 0) {
-        const div = grid.at(row, col)!.div;
+        const div = grid.at(row, col)!.td;
         div.innerText = col.toString();
       }
 
       if (col === 0) {
         const tile = grid.at(row, col)!;
-        tile.div.innerText = row.toString();
+        tile.td.innerText = row.toString();
         tile.td.dataset.type = TileType.Gutter.toString();
       }
     }
@@ -49,11 +49,11 @@ export const drawNodes = (): void => {
   const startTile = grid.atPoint(grid.startPoint)!;
   const endTile = grid.atPoint(grid.endPoint)!;
 
-  startTile.div.innerText = "@";
+  startTile.td.innerText = "@";
   startTile.td.dataset.type = TileType.Start.toString();
   startTile.type = TileType.Start;
 
-  endTile.div.innerText = "$";
+  endTile.td.innerText = "$";
   endTile.td.dataset.type = TileType.End.toString();
   endTile.type = TileType.End;
 };

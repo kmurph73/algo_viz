@@ -30,7 +30,7 @@ const moveNode = (origin: Tile, dest: Tile): void => {
   const char = origin.type === TileType.Start ? "@" : "$";
 
   state.currentType = null;
-  dest.div.innerText = char;
+  dest.td.innerText = char;
   dest.type = origin.type;
   dest.td.dataset.type = origin.type.toString();
 
@@ -50,7 +50,7 @@ const moveNode = (origin: Tile, dest: Tile): void => {
   }
 
   origin.td.classList.remove("selected");
-  origin.div.innerText = "";
+  origin.td.innerText = "";
   origin.type = TileType.Empty;
 };
 
@@ -81,7 +81,7 @@ export const mousedown = (event: Event) => {
         } else {
           state.dragging = true;
           state.currentType = TileType.Wall;
-          tile.div.innerText = "#";
+          tile.td.innerText = "#";
         }
         break;
       case TileType.Wall:
@@ -92,7 +92,7 @@ export const mousedown = (event: Event) => {
         } else {
           state.dragging = true;
           state.currentType = TileType.Empty;
-          tile.div.innerText = "";
+          tile.td.innerText = "";
         }
         break;
       case TileType.End:
@@ -153,7 +153,7 @@ export const mousemove = (event: Event) => {
       const type = tile.type;
 
       if (tile && dragTypes.includes(type)) {
-        const div = tile.div;
+        const div = tile.td;
 
         div.innerText = tileTexts[state.currentType];
         tile.type = state.currentType;

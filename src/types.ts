@@ -1,5 +1,5 @@
 import { IterableLazyDijkstra } from "./algos/IterableLazyDijkstra";
-import { Grid, TileType } from "./grid/Grid";
+import { Grid, Tile, TileType } from "./grid/Grid";
 
 declare global {
   interface Window {
@@ -17,4 +17,5 @@ export type State = {
   allowDiagonal: boolean;
   currentAlgo?: IterableLazyDijkstra;
   currentLoop?: number;
+  currentVisitedTile?: Tile;
 };

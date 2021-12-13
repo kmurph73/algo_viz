@@ -1,4 +1,4 @@
-import { grid, NumColumns, NumRows } from "../constants.js";
+import { grid, NumColumns, NumRows, state } from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import {
   initialEndPoint,
@@ -10,6 +10,7 @@ import {
 export const resetGrid = (): void => {
   grid.startPoint = initialStartPoint;
   grid.endPoint = initialEndPoint;
+  state.currentVisitedTile = undefined;
 
   for (let row = 0; row <= NumRows; row++) {
     for (let col = 0; col <= NumColumns; col++) {
@@ -19,7 +20,7 @@ export const resetGrid = (): void => {
         continue;
       }
 
-      tile.div.classList.remove("red", "blue");
+      tile.td.classList.remove("visited", "queued", "currentnode");
       const type = ((): TileType => {
         if (pointsEq(tile.point, initialStartPoint)) {
           return TileType.Start;
@@ -32,7 +33,7 @@ export const resetGrid = (): void => {
 
       tile.type = type;
       tile.td.dataset.type = type.toString();
-      tile.div.innerText = tileTexts[type];
+      tile.td.innerText = tileTexts[type];
     }
   }
 };

@@ -73,14 +73,13 @@ export const dijkstra = (
           prev: currentNode,
         };
 
-        grid.divAt(row, col).classList.add("blue");
+        grid.tdAt(row, col).classList.add("blue");
         awaitingVisit.enqueue(`${row},${col}`, neighbor);
       }
     }
 
     const { row, col } = currentNode.point;
     visited[`${row},${col}`] = currentNode;
-    grid.divAt(row, col).classList.add("red");
 
     const node = awaitingVisit.dequeue();
 

@@ -24,6 +24,13 @@ export const attachEvents = () => {
 
   document.getElementById("reset")!.addEventListener("click", (e) => {
     resetGrid();
+    state.currentAlgo = undefined;
+    if (state.currentLoop) {
+      clearInterval(state.currentLoop);
+      state.currentLoop = undefined;
+    }
+
+    goButton.innerText = "go";
   });
 
   document.getElementById("save")!.addEventListener("click", (e) => {

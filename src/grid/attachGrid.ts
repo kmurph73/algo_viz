@@ -33,7 +33,6 @@ export const attachGrid = (): void => {
 
       const tile: Tile = {
         td,
-        div,
         point: { row, col },
         type,
       };

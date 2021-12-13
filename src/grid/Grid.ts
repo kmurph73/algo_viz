@@ -15,7 +15,6 @@ export enum TileType {
 
 export type Tile = {
   point: Point;
-  div: HTMLElement;
   td: HTMLElement;
   type: TileType;
 };
@@ -62,14 +61,14 @@ export class Grid {
     return rowArray[col] || null;
   }
 
-  divAt(row: number, col: number): HTMLElement {
-    const div = this.at(row, col)?.div;
+  tdAt(row: number, col: number): HTMLElement {
+    const td = this.at(row, col)?.td;
 
-    if (!div) {
-      throw new Error(`div should be naw: ${row},${col}`);
+    if (!td) {
+      throw new Error(`td should be naw: ${row},${col}`);
     }
 
-    return div;
+    return td;
   }
 
   atPoint({ row, col }: Point): Tile | null {
