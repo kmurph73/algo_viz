@@ -18,10 +18,10 @@ export class UniqueQueue<T> {
     this.length = 0;
   }
 
-  enqueue(id: string, node: T): void {
+  enqueue(id: string, node: T): boolean {
     const existing = this.store[id];
     if (existing) {
-      return;
+      return false;
     }
 
     const tail = this.tailId ? this.store[this.tailId]! : null;
@@ -38,6 +38,8 @@ export class UniqueQueue<T> {
     }
 
     this.length += 1;
+
+    return true;
   }
 
   dequeue(): T | null {

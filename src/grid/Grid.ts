@@ -1,3 +1,5 @@
+import { NumColumns, NumRows } from "../constants.js";
+
 export type Point = {
   row: number;
   col: number;
@@ -26,6 +28,11 @@ export const tileTexts = {
   [TileType.Gutter]: "nada",
 };
 
+type localJSON = { walls: Array<[number, number]>; start: Point; end: Point };
+
+export const initialStartPoint = { row: 1, col: 1 };
+export const initialEndPoint = { row: 10, col: 10 };
+
 export class Grid {
   tiles: Tile[][];
   startPoint: Point;
@@ -33,8 +40,8 @@ export class Grid {
 
   constructor() {
     this.tiles = [];
-    this.startPoint = { row: 1, col: 1 };
-    this.endPoint = { row: 10, col: 10 };
+    this.startPoint = initialStartPoint;
+    this.endPoint = initialEndPoint;
   }
 
   startTile(): Tile | null {
@@ -67,5 +74,28 @@ export class Grid {
 
   atPoint({ row, col }: Point): Tile | null {
     return this.at(row, col);
+  }
+
+  saveToLocalStorage(): void {
+    const json: localJSON = {
+      walls: [],
+      start: this.startPoint,
+      end: this.endPoint,
+    };
+
+    for (let index = 0; index <= NumRows; index++) {
+      const row = this.tiles[index]!;
+
+      for (let index = 0; index <= NumColumns; index++) {
+        const tile = row[index]!;
+
+        if (tile.type === TileType.Empty) {
+          const { row, col } = tile.point;
+          json.walls.push([row, col]);
+        }
+      }
+    }
+
+    localStorage.setItem("grid", JSON.stringify(json));
   }
 }

@@ -34,10 +34,19 @@ const moveNode = (origin: Tile, dest: Tile): void => {
   dest.type = origin.type;
   dest.td.dataset.type = origin.type.toString();
 
+  const algo = state.currentAlgo;
+
   if (origin.type === TileType.Start) {
     grid.startPoint = dest.point;
+    if (algo) {
+      algo.start = dest.point;
+    }
   } else {
     grid.endPoint = dest.point;
+
+    if (algo) {
+      algo.end = dest.point;
+    }
   }
 
   origin.td.classList.remove("selected");
@@ -105,8 +114,29 @@ export const mousedown = (event: Event) => {
   return false;
 };
 
-export const mouseup = (e: Event) => {
+export const mouseup = (event: Event) => {
   state.dragging = false;
+
+  const tile = findValidClickedOnTile(event as PointerEvent);
+
+  if (tile) {
+    switch (tile.type) {
+      case TileType.Empty:
+        if (state.currentType === TileType.Start) {
+          moveNode(grid.startTile()!, tile);
+        } else if (state.currentType === TileType.End) {
+          moveNode(grid.endTile()!, tile);
+        }
+        break;
+      case TileType.Wall:
+        if (state.currentType === TileType.Start) {
+          moveNode(grid.startTile()!, tile);
+        } else if (state.currentType === TileType.End) {
+          moveNode(grid.endTile()!, tile);
+        }
+        break;
+    }
+  }
 };
 
 const dragTypes = [TileType.Wall, TileType.Empty];

@@ -10,6 +10,7 @@
   "scripts": {
     "serve": "http-server",
     "test": "NODE_ENV=test ava test ./dist/test/test.js",
+    "testbug": "NODE_ENV=test ava debug --break ./dist/test/test.js",
     "build": "NODE_ENV=dev rimraf dist && tsc"
   }
 }

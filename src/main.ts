@@ -1,4 +1,5 @@
-import { state } from "./constants.js";
+import { grid, state } from "./constants.js";
+import { attachEvents } from "./events/click.js";
 import { mousedown, mousemove, mouseup } from "./events/mouse.js";
 import { attachGrid } from "./grid/attachGrid.js";
 import { drawGrid, drawGutterNumbers, drawNodes } from "./grid/drawGrid.js";
@@ -8,6 +9,7 @@ const main = () => {
   attachGrid();
   drawGutterNumbers();
   drawNodes();
+  attachEvents();
 
   document.body.addEventListener("mousedown", mousedown);
   document.body.addEventListener("mouseup", mouseup);
@@ -16,4 +18,4 @@ const main = () => {
 };
 
 window.main = main;
-window.state = state;
+window.App = { state, grid };

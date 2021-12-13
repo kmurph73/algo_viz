@@ -10,6 +10,7 @@ body {
 
 table.grid {
   border-collapse: collapse;
+  cursor: default !important;
 }
 
 td.tile {
@@ -32,13 +33,11 @@ td.gutter > div {
 }
 
 .red {
-  color: red !important;
-  font-size: 10px !important;
+  background-color: red !important;
 }
 
 .blue {
-  color: blue;
-  font-size: 10px !important;
+  background-color: blue;
 }
 
 td.tile.selected > div {

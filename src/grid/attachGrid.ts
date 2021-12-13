@@ -25,13 +25,17 @@ export const attachGrid = (): void => {
 
       td.dataset.row = row.toString();
       td.dataset.col = col.toString();
-      td.dataset.type = TileType.Empty.toString();
+      const type = td.classList.contains("gutter")
+        ? TileType.Gutter
+        : TileType.Empty;
+
+      td.dataset.type = type.toString();
 
       const tile: Tile = {
         td,
         div,
         point: { row, col },
-        type: TileType.Empty,
+        type,
       };
 
       tiles.push(tile);

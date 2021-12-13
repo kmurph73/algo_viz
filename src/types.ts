@@ -1,9 +1,13 @@
-import { TileType } from "./grid/Grid";
+import { IterableLazyDijkstra } from "./algos/IterableLazyDijkstra";
+import { Grid, TileType } from "./grid/Grid";
 
 declare global {
   interface Window {
     main: () => void;
-    state: State;
+    App: {
+      state: State;
+      grid: Grid;
+    };
   }
 }
 
@@ -11,4 +15,6 @@ export type State = {
   dragging: boolean;
   currentType: TileType | null;
   allowDiagonal: boolean;
+  currentAlgo?: IterableLazyDijkstra;
+  currentLoop?: number;
 };

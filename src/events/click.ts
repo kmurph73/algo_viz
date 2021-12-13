@@ -1,56 +1,32 @@
-// import { grid, state } from "../constants.js";
-// import { then } from "../util/util.js";
+import { appDijkstra, startLooping, tick } from "../app_util/appDjikstra.js";
+import { state } from "../constants.js";
+import { resetGrid } from "../grid/resetGrid.js";
 
-export const add = (n: number) => n + 1;
-// const dequeue = <T>(set: Set<T>): T | undefined => {
-//   const [t] = set;
-//   if (t) {
-//     set.delete(t);
-//   }
+export const attachEvents = () => {
+  const goButton = document.getElementById("go")!;
+  goButton.addEventListener("click", (e) => {
+    if (state.currentLoop) {
+      clearInterval(state.currentLoop);
+      state.currentLoop = undefined;
+      goButton.innerText = "go";
+    } else if (state.currentAlgo) {
+      goButton.innerText = "stop";
+      startLooping(state.currentAlgo);
+    } else {
+      goButton.innerText = "stop";
+      appDijkstra();
+    }
+  });
 
-//   return t;
-// };
+  document.getElementById("tick")!.addEventListener("click", (e) => {
+    tick();
+  });
 
-// export const onclicky = (e: Event) => {
-//   const event = e as PointerEvent;
-//   const path = event.composedPath();
-//   const tile = path.find((ele) =>
-//     isHtml(ele) ? ele.classList.contains("tile") : false
-//   );
+  document.getElementById("reset")!.addEventListener("click", (e) => {
+    resetGrid();
+  });
 
-//   if (tile) {
-//     const td = tile as HTMLElement;
-
-//     const col = td.dataset.col;
-//     const row = td.dataset.row;
-
-//     if (!col || !row) {
-//       throw new Error("col && row should be here");
-//     }
-
-//     const point = { row: parseInt(row), col: parseInt(col) };
-//     const div = grid.atPoint(point)!.div;
-
-//     const queued = state.queued;
-//     div.innerText = then(div.innerText, (text) => {
-//       switch (text) {
-//         case "@":
-//           state.queued.add("@");
-//           return "";
-//         case "#":
-//           return then(dequeue(queued), (sym) => {
-//             return sym ? sym : "";
-//           });
-//         case "":
-//           return then(dequeue(queued), (sym) => {
-//             return sym ? sym : "#";
-//           });
-//         case "$":
-//           state.queued.add("$");
-//           return "";
-//         default:
-//           throw new Error("shouldnt get here");
-//       }
-//     });
-//   }
-// };
+  document.getElementById("save")!.addEventListener("click", (e) => {
+    console.log("save");
+  });
+};
