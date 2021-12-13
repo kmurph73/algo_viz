@@ -4,12 +4,7 @@ import {
 } from "../algos/IterableLazyDijkstra.js";
 import { grid, state } from "../constants.js";
 import { Tile, TileType } from "../grid/Grid.js";
-import { then } from "../util/util.js";
-
-type Point = {
-  row: number;
-  col: number;
-};
+import { Point } from "../structs/point.js";
 
 const cardinalNeighbors: [string, Point][] = [
   ["north", { row: 1, col: 0 }],
@@ -68,15 +63,38 @@ const canEnterTile = (row: number, col: number): boolean => {
   return tile != null && tile.type === TileType.Empty;
 };
 
+const walkToDest = (path: Point[]): void => {
+  let steps = 0;
+  const dest = path.length - 1;
+  const walk = setInterval(() => {
+    if (steps <= dest) {
+      const point = path[steps]!;
+      const tile = grid.atPoint(point)!;
+      tile.td.classList.add("yellow-brick");
+
+      steps += 1;
+    } else {
+      window.clearInterval(walk);
+    }
+  }, 100);
+};
+
 export const startLooping = (algo: IterableLazyDijkstra): void => {
   const loop = setInterval(() => {
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
 
+    handleTick(tile, next.type);
+
     if (ActionType.Found === next.type) {
       clearInterval(loop);
+      const path = next.path;
+      if (!path) {
+        throw new Error("end node found, path should be here");
+      }
+
+      walkToDest(path);
     }
-    handleTick(tile, next.type);
   }, 30);
 
   state.currentLoop = loop;

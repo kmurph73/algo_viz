@@ -25,6 +25,7 @@ export const attachEvents = () => {
   document.getElementById("reset")!.addEventListener("click", (e) => {
     resetGrid();
     state.currentAlgo = undefined;
+
     if (state.currentLoop) {
       clearInterval(state.currentLoop);
       state.currentLoop = undefined;
@@ -33,7 +34,7 @@ export const attachEvents = () => {
     goButton.innerText = "go";
   });
 
-  document.getElementById("save")!.addEventListener("click", (e) => {
-    console.log("save");
-  });
+  // document.getElementById("save")!.addEventListener("click", (e) => {
+  //   console.log("save");
+  // });
 };

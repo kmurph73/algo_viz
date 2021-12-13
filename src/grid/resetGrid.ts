@@ -20,7 +20,12 @@ export const resetGrid = (): void => {
         continue;
       }
 
-      tile.td.classList.remove("visited", "queued", "currentnode");
+      tile.td.classList.remove(
+        "visited",
+        "queued",
+        "currentnode",
+        "yellow-brick"
+      );
       const type = ((): TileType => {
         if (pointsEq(tile.point, initialStartPoint)) {
           return TileType.Start;

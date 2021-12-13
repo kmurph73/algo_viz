@@ -14,10 +14,33 @@
  onselectstart="return false;" 
 		></div>
 
-		<button id='go'>go</button>
-		<button id='tick'>tick</button>
-		<button id='reset'>reset</button>
-		<button id='save'>save</button>
+		<div class='d-flex space-children'>
+			<button id='go'>go</button>
+			<button id='tick'>tick</button>
+			<button id='reset'>reset</button>
+			<!-- <button id='save'>save</button> -->
+		</div>
+		<div class='mt-2'>
+			<div class='d-flex'>
+				<div class='box queued'></div>
+				<div class='ms-1'>queued up for later visit</div>
+			</div>
+
+			<div class='d-flex mt-1'>
+				<div class='box visited'></div>
+				<div class="ms-1">visited</div>
+			</div>
+
+			<div class='d-flex mt-1'>
+				<div class='box currentnode'></div>
+				<div class="ms-1">current node being visited</div>
+			</div>
+
+			<div class='d-flex mt-1'>
+				<div class='box yellow-brick'></div>
+				<div class="ms-1">yellow brick road</div>
+			</div>
+		</div>
 
     <script>
 			const script = document.getElementById('main');

@@ -4,14 +4,30 @@ body {
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.row {
-  display: flex;
-}
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.mt-1 {
+  margin-top: 0.25rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.ms-1 {
+  margin-left: 0.25rem !important;
+}
+
+.ms-2 {
+  margin-left: 0.5rem !important;
+}
+
+.row {
+  display: flex;
 }
 
 table.grid {
@@ -51,6 +67,23 @@ td.tile.selected {
   background-color: rgba(255, 255, 0, 0.623);
 }
 
+.yellow-brick {
+  background-color: yellow !important;
+}
+
 td.gutter {
   border: 0;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.space-children > * {
+  margin-right: 5px;
+}
+
+.box {
+  width: 25px;
+  height: 25px;
 }

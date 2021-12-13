@@ -39,7 +39,7 @@ const getPath = (lastNode: Node): Point[] => {
 
 export class IterableLazyDijkstra {
   visited: Record<string, Node>;
-  awaitingVisit: UniqueQueue<Point>;
+  awaitingVisit: UniqueQueue<Node>;
   start: Point;
   end: Point;
   totalTicks: number;
@@ -75,14 +75,9 @@ export class IterableLazyDijkstra {
     const { row, col } = this.currentNode.point;
     this.visited[`${row},${col}`] = this.currentNode;
 
-    const nextPoint = this.awaitingVisit.dequeue();
-    if (nextPoint) {
-      const nextNode: Node = {
-        point: nextPoint,
-        prev: this.currentNode,
-        value: this.currentNode.value + 1,
-      };
-
+    const nextNode = this.awaitingVisit.dequeue();
+    if (nextNode) {
+      const nextPoint = nextNode.point;
       this.currentNode = nextNode;
       this.currentNeighbors = this.getNeighbors(nextPoint.row, nextPoint.col);
       this.currentNeighborsLength = this.currentNeighbors.length;
@@ -119,7 +114,12 @@ export class IterableLazyDijkstra {
       }
 
       if (this.canEnterTile(row, col)) {
-        const result = this.awaitingVisit.enqueue(`${row},${col}`, point);
+        const node: Node = {
+          point,
+          prev: this.currentNode,
+          value: this.currentNode.value + 1,
+        };
+        const result = this.awaitingVisit.enqueue(`${row},${col}`, node);
 
         if (result) {
           return { point, type: ActionType.Enqueued };

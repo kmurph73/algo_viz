@@ -1,9 +1,5 @@
 import { NumColumns, NumRows } from "../constants.js";
-
-export type Point = {
-  row: number;
-  col: number;
-};
+import { Point } from "../structs/point.js";
 
 export enum TileType {
   Empty = 1,

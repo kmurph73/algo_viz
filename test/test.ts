@@ -6,10 +6,9 @@ import {
 import { getCardinalNeighbors } from "../src/app_util/appDjikstra.js";
 import { state } from "../src/constants.js";
 
-test("foo", (t) => {
+test.skip("short path", (t) => {
   const start = { row: 0, col: 0 };
   const end = { row: 2, col: 2 };
-  const diagonal = state.allowDiagonal;
   const grid = Array(10).fill(1);
 
   for (let index = 0; index < 10; index++) {
@@ -30,7 +29,7 @@ test("foo", (t) => {
     end,
     canEnterTile,
     getNeighbors: getCardinalNeighbors,
-    diagonal,
+    diagonal: false,
   });
 
   let result = algo.next(); // 1
@@ -69,7 +68,47 @@ test("foo", (t) => {
 
   result = algo.next(); // 7
 
-  t.is(algo.neighborIndex, 0);
-  t.is(result.type, ActionType.Visit);
-  t.deepEqual(result.point, { row: 0, col: 1 });
+  t.is(result.type, ActionType.Enqueued);
+  t.deepEqual(result.point, { row: 0, col: 2 });
+
+  while (result.type !== ActionType.Found) {
+    result = algo.next();
+  }
+
+  t.is(algo.totalTicks, 19); // 19
+
+  const path = result.path;
+  t.deepEqual(path, [
+    { row: 0, col: 0 },
+    { row: 1, col: 0 },
+    { row: 2, col: 0 },
+    { row: 2, col: 1 },
+    { row: 2, col: 2 },
+  ]);
+});
+
+test("no steps", (t) => {
+  const start = { row: 0, col: 0 };
+  const end = { row: 2, col: 2 };
+  const grid = Array(10).fill(1);
+
+  for (let index = 0; index < 10; index++) {
+    grid[index] = Array(10).fill(1);
+  }
+
+  const canEnterTile = (row: number, col: number): boolean => {
+    return false;
+  };
+
+  const algo = new IterableLazyDijkstra({
+    start,
+    end,
+    canEnterTile,
+    getNeighbors: getCardinalNeighbors,
+    diagonal: false,
+  });
+
+  let result = algo.next();
+
+  t.is(result.type, ActionType.NoMas);
 });
