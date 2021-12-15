@@ -1,10 +1,17 @@
 import { appDijkstra, startLooping, tick } from "../app_util/appDjikstra.js";
-import { state } from "../constants.js";
+import { actions, state } from "../constants.js";
 import { resetGrid } from "../grid/resetGrid.js";
 import { Speed } from "../types.js";
 
-export const attachEvents = () => {
-  const goButton = document.getElementById("go")!;
+export const assignActions = (): void => {
+  actions.go = unwrap(document.getElementById("go"));
+  actions.tick = unwrap(document.getElementById("tick"));
+  actions.go = unwrap(document.getElementById("go"));
+  actions.go = unwrap(document.getElementById("go"));
+};
+
+export const attachEvents = (): void => {
+  const goButton = actions.go!;
   goButton.addEventListener("click", (e) => {
     if (state.currentLoop) {
       clearInterval(state.currentLoop);

@@ -10,6 +10,7 @@ const main = () => {
   drawGutterNumbers();
   drawNodes();
   attachEvents();
+  assignButton();
 
   document.body.addEventListener("mousedown", mousedown);
   document.body.addEventListener("mouseup", mouseup);

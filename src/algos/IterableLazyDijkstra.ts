@@ -1,13 +1,13 @@
 import { pointsEq } from "../structs/point.js";
 import { UniqueQueue } from "./UniqueQueue.js";
 
-type Point = { row: number; col: number };
+type Point = { x: number; y: number };
 
 type Props = {
   start: Point;
   end: Point;
-  canEnterTile: (row: number, col: number) => boolean;
-  getNeighbors: (row: number, col: number) => Point[];
+  canEnterTile: (x: number, y: number) => boolean;
+  getNeighbors: (x: number, y: number) => Point[];
 
   diagonal: boolean;
 };
@@ -43,8 +43,8 @@ export class IterableLazyDijkstra {
   start: Point;
   end: Point;
   totalTicks: number;
-  canEnterTile: (row: number, col: number) => boolean;
-  getNeighbors: (row: number, col: number) => Point[];
+  canEnterTile: (x: number, y: number) => boolean;
+  getNeighbors: (x: number, y: number) => Point[];
   currentNode: Node;
   neighborIndex: number;
   currentNeighbors: Point[];
@@ -65,21 +65,21 @@ export class IterableLazyDijkstra {
       value: 0,
     };
 
-    this.currentNeighbors = getNeighbors(start.row, start.col);
+    this.currentNeighbors = getNeighbors(start.x, start.y);
     this.currentNeighborsLength = this.currentNeighbors.length;
     this.canEnterTile = canEnterTile;
     this.getNeighbors = getNeighbors;
   }
 
   private visitNext(): { point: Point; type: ActionType } {
-    const { row, col } = this.currentNode.point;
-    this.visited[`${row},${col}`] = this.currentNode;
+    const { x, y } = this.currentNode.point;
+    this.visited[`${x},${y}`] = this.currentNode;
 
     const nextNode = this.awaitingVisit.dequeue();
     if (nextNode) {
       const nextPoint = nextNode.point;
       this.currentNode = nextNode;
-      this.currentNeighbors = this.getNeighbors(nextPoint.row, nextPoint.col);
+      this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
       this.currentNeighborsLength = this.currentNeighbors.length;
       this.neighborIndex = 0;
 
@@ -105,21 +105,21 @@ export class IterableLazyDijkstra {
         return { point, type: ActionType.Found, path };
       }
 
-      const { row, col } = point;
+      const { x, y } = point;
       this.neighborIndex += 1;
 
-      const visited = this.visited[`${row},${col}`];
+      const visited = this.visited[`${x},${y}`];
       if (visited) {
         continue;
       }
 
-      if (this.canEnterTile(row, col)) {
+      if (this.canEnterTile(x, y)) {
         const node: Node = {
           point,
           prev: this.currentNode,
           value: this.currentNode.value + 1,
         };
-        const result = this.awaitingVisit.enqueue(`${row},${col}`, node);
+        const result = this.awaitingVisit.enqueue(`${x},${y}`, node);
 
         if (result) {
           return { point, type: ActionType.Enqueued };

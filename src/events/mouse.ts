@@ -14,12 +14,12 @@ export const findValidClickedOnTile = (
   ) as HTMLElement | undefined;
 
   if (td && !td.classList.contains("gutter")) {
-    const row = parseInt(td.dataset.row!);
-    const col = parseInt(td.dataset.col!);
+    const y = parseInt(td.dataset.y!);
+    const x = parseInt(td.dataset.x!);
 
-    const tile = grid.at(row, col);
+    const tile = grid.at(x, y);
     if (!tile) {
-      throw new Error(`tile ${row},${col} should be here`);
+      throw new Error(`tile ${x},${y} should be here`);
     }
 
     return tile;

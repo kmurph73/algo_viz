@@ -12,19 +12,18 @@ export const attachGrid = (): void => {
   // we want 0,0 at bottom left of grid
   trs.reverse();
 
-  for (let row = 0; row < trs.length; row++) {
-    const tr = trs[row]!;
+  for (let y = 0; y < trs.length; y++) {
+    const tr = trs[y]!;
 
     const tds = tr.children;
 
     const tiles: Tile[] = [];
 
-    for (let col = 0; col < tds.length; col++) {
-      const td = tds[col]! as HTMLElement;
-      const div = td.children[0]! as HTMLElement;
+    for (let x = 0; x < tds.length; x++) {
+      const td = tds[x]! as HTMLElement;
 
-      td.dataset.row = row.toString();
-      td.dataset.col = col.toString();
+      td.dataset.y = y.toString();
+      td.dataset.x = x.toString();
       const type = td.classList.contains("gutter")
         ? TileType.Gutter
         : TileType.Empty;
@@ -33,7 +32,7 @@ export const attachGrid = (): void => {
 
       const tile: Tile = {
         td,
-        point: { row, col },
+        point: { x, y },
         type,
       };
 

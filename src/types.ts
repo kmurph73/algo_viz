@@ -4,6 +4,7 @@ import { Grid, Tile, TileType } from "./grid/Grid";
 declare global {
   interface Window {
     main: () => void;
+    yar: boolean;
     App: {
       state: State;
       grid: Grid;

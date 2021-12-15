@@ -25,8 +25,8 @@ export const tileTexts = {
 
 type localJSON = { walls: Array<[number, number]>; start: Point; end: Point };
 
-export const initialStartPoint = { row: 1, col: 1 };
-export const initialEndPoint = { row: 10, col: 10 };
+export const initialStartPoint = { x: 1, y: 1 };
+export const initialEndPoint = { x: 10, y: 10 };
 
 export class Grid {
   tiles: Tile[][];
@@ -47,28 +47,28 @@ export class Grid {
     return this.atPoint(this.endPoint);
   }
 
-  at(row: number, col: number): Tile | null {
-    const rowArray = this.tiles[row];
+  at(x: number, y: number): Tile | null {
+    const rowArray = this.tiles[y];
 
     if (!rowArray) {
       return null;
     }
 
-    return rowArray[col] || null;
+    return rowArray[x] || null;
   }
 
-  tdAt(row: number, col: number): HTMLElement {
-    const td = this.at(row, col)?.td;
+  tdAt(x: number, y: number): HTMLElement {
+    const td = this.at(x, y)?.td;
 
     if (!td) {
-      throw new Error(`td should be naw: ${row},${col}`);
+      throw new Error(`td should be naw: ${x},${y}`);
     }
 
     return td;
   }
 
-  atPoint({ row, col }: Point): Tile | null {
-    return this.at(row, col);
+  atPoint({ x, y }: Point): Tile | null {
+    return this.at(x, y);
   }
 
   saveToLocalStorage(): void {
@@ -85,8 +85,8 @@ export class Grid {
         const tile = row[index]!;
 
         if (tile.type === TileType.Empty) {
-          const { row, col } = tile.point;
-          json.walls.push([row, col]);
+          const { x, y } = tile.point;
+          json.walls.push([x, y]);
         }
       }
     }

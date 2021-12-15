@@ -4,44 +4,40 @@ import {
 } from "../algos/IterableLazyDijkstra.js";
 import { grid, state } from "../constants.js";
 import { Tile, TileType } from "../grid/Grid.js";
-import { Point } from "../structs/point.js";
+import { addPoints, Point } from "../structs/point.js";
 
-const cardinalNeighbors: [string, Point][] = [
-  ["north", { row: 1, col: 0 }],
-  ["east", { row: 0, col: 1 }],
-  ["south", { row: -1, col: 0 }],
-  ["west", { row: 0, col: -1 }],
+const manhattanNeighbors: [string, Point][] = [
+  ["north", { x: 0, y: 1 }],
+  ["east", { x: 1, y: 0 }],
+  ["south", { x: 0, y: -1 }],
+  ["west", { x: -1, y: 0 }],
 ];
 
 const allNeighbors: [string, Point][] = [
-  ["north", { row: 1, col: 0 }],
-  ["east", { row: 0, col: 1 }],
-  ["south", { row: -1, col: 0 }],
-  ["west", { row: 0, col: -1 }],
+  ["north", { x: 0, y: 1 }],
+  ["east", { x: 1, y: 0 }],
+  ["south", { x: 0, y: -1 }],
+  ["west", { x: -1, y: 0 }],
 
-  ["northEast", { row: 1, col: 1 }],
-  ["southEast", { row: -1, col: 1 }],
-  ["southWest", { row: -1, col: -1 }],
-  ["northWest", { row: 1, col: -1 }],
+  ["northEast", { x: 1, y: 1 }],
+  ["southEast", { x: 1, y: -1 }],
+  ["southWest", { x: -1, y: -1 }],
+  ["northWest", { x: -1, y: 1 }],
 ];
 
-const addPoints = (p1: Point, p2: Point): Point => {
-  return { row: p1.row + p2.row, col: p1.col + p2.col };
-};
-
 export const getNeighbors = (
-  row: number,
-  col: number,
+  x: number,
+  y: number,
   diagonal: boolean
 ): Point[] => {
   const points: Point[] = [];
 
-  const directions = diagonal ? allNeighbors : cardinalNeighbors;
+  const directions = diagonal ? allNeighbors : manhattanNeighbors;
 
   for (let index = 0; index < directions.length; index++) {
     const point = directions[index]![1];
 
-    const nextPoint = addPoints(point, { row, col });
+    const nextPoint = addPoints(point, { x, y });
 
     points.push(nextPoint);
   }
@@ -49,16 +45,16 @@ export const getNeighbors = (
   return points;
 };
 
-export const getDiagonalNeighbors = (row: number, col: number): Point[] => {
-  return getNeighbors(row, col, true);
+export const getDiagonalNeighbors = (x: number, y: number): Point[] => {
+  return getNeighbors(x, y, true);
 };
 
-export const getCardinalNeighbors = (row: number, col: number): Point[] => {
-  return getNeighbors(row, col, false);
+export const getManhattanNeighbors = (x: number, y: number): Point[] => {
+  return getNeighbors(x, y, false);
 };
 
-const canEnterTile = (row: number, col: number): boolean => {
-  const tile = grid.at(row, col);
+const canEnterTile = (x: number, y: number): boolean => {
+  const tile = grid.at(x, y);
 
   return tile != null && tile.type === TileType.Empty;
 };
@@ -100,6 +96,7 @@ export const startLooping = (algo: IterableLazyDijkstra): void => {
 
     if (ActionType.Found === next.type) {
       clearInterval(loop);
+
       const path = next.path;
       if (!path) {
         throw new Error("end node found, path should be here");
@@ -128,7 +125,7 @@ const initDijkstra = (): IterableLazyDijkstra => {
     start,
     end,
     canEnterTile,
-    getNeighbors: getCardinalNeighbors,
+    getNeighbors: getManhattanNeighbors,
     diagonal,
   });
 };
