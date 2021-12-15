@@ -19,13 +19,15 @@ export enum ActionType {
   NoMas,
 }
 
-type Node = {
+export type AlgoNode = {
   point: Point;
-  prev: Node | null;
+  prev: AlgoNode | null;
   value: number;
 };
 
-const getPath = (lastNode: Node): Point[] => {
+export type AlgoTick = { point: Point; type: ActionType; path?: Point[] };
+
+const getPath = (lastNode: AlgoNode): Point[] => {
   const path: Point[] = [lastNode.point];
   let prev = lastNode.prev;
 
@@ -38,14 +40,14 @@ const getPath = (lastNode: Node): Point[] => {
 };
 
 export class IterableLazyDijkstra {
-  visited: Record<string, Node>;
-  awaitingVisit: UniqueQueue<Node>;
+  visited: Record<string, AlgoNode>;
+  awaitingVisit: UniqueQueue<AlgoNode>;
   start: Point;
   end: Point;
   totalTicks: number;
   canEnterTile: (x: number, y: number) => boolean;
   getNeighbors: (x: number, y: number) => Point[];
-  currentNode: Node;
+  currentNode: AlgoNode;
   neighborIndex: number;
   currentNeighbors: Point[];
   currentNeighborsLength: number;
@@ -89,13 +91,13 @@ export class IterableLazyDijkstra {
     }
   }
 
-  next(): { point: Point; type: ActionType; path?: Point[] } {
+  next(): AlgoTick {
     this.totalTicks += 1;
     while (this.neighborIndex < this.currentNeighborsLength) {
       const point = this.currentNeighbors[this.neighborIndex]!;
 
       if (pointsEq(point, this.end)) {
-        const node: Node = {
+        const node: AlgoNode = {
           point,
           prev: this.currentNode,
           value: this.currentNode.value + 1,
@@ -114,7 +116,7 @@ export class IterableLazyDijkstra {
       }
 
       if (this.canEnterTile(x, y)) {
-        const node: Node = {
+        const node: AlgoNode = {
           point,
           prev: this.currentNode,
           value: this.currentNode.value + 1,

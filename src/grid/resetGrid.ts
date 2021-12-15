@@ -12,9 +12,9 @@ export const resetGrid = (): void => {
   grid.endPoint = initialEndPoint;
   state.currentVisitedTile = undefined;
 
-  for (let row = 0; row <= NumRows; row++) {
-    for (let col = 0; col <= NumColumns; col++) {
-      const tile = grid.at(row, col)!;
+  for (let y = 0; y <= NumRows; y++) {
+    for (let x = 0; x <= NumColumns; x++) {
+      const tile = grid.at(x, y)!;
 
       if (tile.type === TileType.Gutter) {
         continue;
@@ -26,6 +26,7 @@ export const resetGrid = (): void => {
         "currentnode",
         "yellow-brick"
       );
+
       const type = ((): TileType => {
         if (pointsEq(tile.point, initialStartPoint)) {
           return TileType.Start;

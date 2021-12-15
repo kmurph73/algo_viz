@@ -29,16 +29,16 @@ export const drawGrid = (): void => {
 };
 
 export const drawGutterNumbers = (): void => {
-  for (let row = 0; row <= NumRows; row++) {
-    for (let col = 0; col <= NumColumns; col++) {
-      if (row === 0) {
-        const div = grid.at(row, col)!.td;
-        div.innerText = col.toString();
+  for (let y = 0; y <= NumRows; y++) {
+    for (let x = 0; x <= NumColumns; x++) {
+      if (y === 0) {
+        const div = grid.at(x, y)!.td;
+        div.innerText = x.toString();
       }
 
-      if (col === 0) {
-        const tile = grid.at(row, col)!;
-        tile.td.innerText = row.toString();
+      if (x === 0) {
+        const tile = grid.at(x, y)!;
+        tile.td.innerText = y.toString();
         tile.td.dataset.type = TileType.Gutter.toString();
       }
     }
