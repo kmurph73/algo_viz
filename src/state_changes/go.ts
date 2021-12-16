@@ -1,5 +1,7 @@
+import { IterableAStar } from "../algos/IterableAStar.js";
 import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
-import { initDijkstra } from "../app_util/appDjikstra.js";
+import { initAStar } from "../app_util/initAStar.js";
+import { initDijkstra } from "../app_util/initDjikstra.js";
 import { buttons, grid, state } from "../constants.js";
 import { getSpeed } from "./speed.js";
 import { handleTick } from "./tick.js";
@@ -17,11 +19,13 @@ export const clickGoButton = () => {
     startLooping(state.currentAlgo);
   } else {
     goButton.innerText = "stop";
-    startDijkstra();
+    state.algo === "A*" ? startAStar() : startDijkstra();
   }
 };
 
-export const startLooping = (algo: IterableLazyDijkstra): void => {
+export const startLooping = (
+  algo: IterableLazyDijkstra | IterableAStar
+): void => {
   const speed = getSpeed();
   buttons.tick!.disabled = true;
   buttons.reset!.disabled = true;
@@ -38,6 +42,13 @@ export const startLooping = (algo: IterableLazyDijkstra): void => {
 
 export const startDijkstra = () => {
   const algo = initDijkstra();
+  state.currentAlgo = algo;
+
+  startLooping(algo);
+};
+
+export const startAStar = () => {
+  const algo = initAStar();
   state.currentAlgo = algo;
 
   startLooping(algo);

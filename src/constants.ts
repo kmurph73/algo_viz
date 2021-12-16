@@ -14,6 +14,7 @@ type Buttons = {
 
 type Selects = {
   speed: HTMLSelectElement | null;
+  algo: HTMLSelectElement | null;
 };
 
 export const buttons: Buttons = {
@@ -24,6 +25,7 @@ export const buttons: Buttons = {
 
 export const selects: Selects = {
   speed: null,
+  algo: null,
 };
 
 export const state: State = {
@@ -31,4 +33,5 @@ export const state: State = {
   currentType: TileType.Wall,
   allowDiagonal: false,
   speed: "medium",
+  algo: "A*",
 };

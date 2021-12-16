@@ -1,60 +1,24 @@
-import { pointsEq } from "../structs/point.js";
-import { UniqueQueue } from "./UniqueQueue.js";
-
-type Point = { x: number; y: number };
-
-type Props = {
-  start: Point;
-  end: Point;
-  canEnterTile: (x: number, y: number) => boolean;
-  getNeighbors: (x: number, y: number) => Point[];
-
-  diagonal: boolean;
-};
-
-export enum ActionType {
-  Enqueued = 1,
-  Visit,
-  Found,
-  NoMas,
-}
-
-export type AlgoNode = {
-  point: Point;
-  prev: AlgoNode | null;
-  value: number;
-};
-
-export type AlgoTick = { point: Point; type: ActionType; path?: Point[] };
-
-const getPath = (lastNode: AlgoNode): Point[] => {
-  const path: Point[] = [lastNode.point];
-  let prev = lastNode.prev;
-
-  while (prev != null) {
-    path.push(prev.point);
-    prev = prev.prev;
-  }
-
-  return path.reverse();
-};
+import { Point, pointsEq } from "../structs/point.js";
+import { Algo } from "./algo_types.js";
+import { getPath } from "./algo_util.js";
+import { Queue } from "./Queue.js";
 
 export class IterableLazyDijkstra {
-  visited: Record<string, AlgoNode>;
-  awaitingVisit: UniqueQueue<AlgoNode>;
+  visited: Record<string, Algo.Node>;
+  awaitingVisit: Queue<Algo.Node>;
   start: Point;
   end: Point;
   totalTicks: number;
   canEnterTile: (x: number, y: number) => boolean;
   getNeighbors: (x: number, y: number) => Point[];
-  currentNode: AlgoNode;
+  currentNode: Algo.Node;
   neighborIndex: number;
   currentNeighbors: Point[];
   currentNeighborsLength: number;
 
-  constructor({ start, end, canEnterTile, getNeighbors }: Props) {
+  constructor({ start, end, canEnterTile, getNeighbors }: Algo.Props) {
     this.visited = {};
-    this.awaitingVisit = new UniqueQueue();
+    this.awaitingVisit = new Queue();
 
     this.start = start;
     this.end = end;
@@ -73,7 +37,7 @@ export class IterableLazyDijkstra {
     this.getNeighbors = getNeighbors;
   }
 
-  private visitNext(): { point: Point; type: ActionType } {
+  private visitNext(): { point: Point; type: Algo.ActionType } {
     const { x, y } = this.currentNode.point;
     this.visited[`${x},${y}`] = this.currentNode;
 
@@ -85,47 +49,47 @@ export class IterableLazyDijkstra {
       this.currentNeighborsLength = this.currentNeighbors.length;
       this.neighborIndex = 0;
 
-      return { point: nextPoint, type: ActionType.Visit };
+      return { point: nextPoint, type: Algo.ActionType.Visit };
     } else {
-      return { point: this.currentNode.point, type: ActionType.NoMas };
+      return { point: this.currentNode.point, type: Algo.ActionType.NoMas };
     }
   }
 
-  next(): AlgoTick {
+  next(): Algo.Tick {
     this.totalTicks += 1;
     while (this.neighborIndex < this.currentNeighborsLength) {
       const point = this.currentNeighbors[this.neighborIndex]!;
 
       if (pointsEq(point, this.end)) {
-        const node: AlgoNode = {
+        const node: Algo.Node = {
           point,
           prev: this.currentNode,
           value: this.currentNode.value + 1,
         };
         const path = getPath(node);
 
-        return { point, type: ActionType.Found, path };
+        return { point, type: Algo.ActionType.Found, path };
       }
 
       const { x, y } = point;
       this.neighborIndex += 1;
 
-      const visited = this.visited[`${x},${y}`];
-      if (visited) {
+      const id = `${x},${y}`;
+      const visited = this.visited[id];
+      if (visited || this.awaitingVisit.has(id)) {
         continue;
       }
 
       if (this.canEnterTile(x, y)) {
-        const node: AlgoNode = {
+        const node: Algo.Node = {
           point,
           prev: this.currentNode,
           value: this.currentNode.value + 1,
         };
-        const result = this.awaitingVisit.enqueue(`${x},${y}`, node);
 
-        if (result) {
-          return { point, type: ActionType.Enqueued };
-        }
+        this.awaitingVisit.enqueue(id, node);
+
+        return { point, type: Algo.ActionType.Enqueued };
       }
     }
 

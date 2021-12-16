@@ -1,9 +1,7 @@
 import test from "ava";
-import {
-  ActionType,
-  IterableLazyDijkstra,
-} from "../src/algos/IterableLazyDijkstra.js";
-import { getManhattanNeighbors } from "../src/app_util/appDjikstra.js";
+import { Algo } from "../src/algos/algo_types.js";
+import { IterableLazyDijkstra } from "../src/algos/IterableLazyDijkstra.js";
+import { getManhattanNeighbors } from "../src/app_util/app_util.js";
 
 test("short path", (t) => {
   const start = { x: 0, y: 0 };
@@ -33,44 +31,44 @@ test("short path", (t) => {
 
   let result = algo.next(); // 1
 
-  t.is(result.type, ActionType.Enqueued);
+  t.is(result.type, Algo.ActionType.Enqueued);
   t.deepEqual(result.point, { x: 0, y: 1 });
 
   result = algo.next(); // 2
 
-  t.is(result.type, ActionType.Enqueued);
+  t.is(result.type, Algo.ActionType.Enqueued);
   t.deepEqual(result.point, { x: 1, y: 0 });
 
   result = algo.next(); // 3
 
-  t.is(result.type, ActionType.Visit);
+  t.is(result.type, Algo.ActionType.Visit);
   t.deepEqual(result.point, { x: 0, y: 1 });
   t.is(algo.neighborIndex, 0);
 
   result = algo.next(); // 4
 
   t.is(algo.neighborIndex, 1);
-  t.is(result.type, ActionType.Enqueued);
+  t.is(result.type, Algo.ActionType.Enqueued);
   t.deepEqual(result.point, { x: 0, y: 2 });
 
   result = algo.next(); // 5
 
   t.is(algo.neighborIndex, 2);
-  t.is(result.type, ActionType.Enqueued);
+  t.is(result.type, Algo.ActionType.Enqueued);
   t.deepEqual(result.point, { x: 1, y: 1 });
 
   result = algo.next(); // 6
 
   t.is(algo.neighborIndex, 0);
-  t.is(result.type, ActionType.Visit);
+  t.is(result.type, Algo.ActionType.Visit);
   t.deepEqual(result.point, { x: 1, y: 0 });
 
   result = algo.next(); // 7
 
-  t.is(result.type, ActionType.Enqueued);
+  t.is(result.type, Algo.ActionType.Enqueued);
   t.deepEqual(result.point, { x: 2, y: 0 });
 
-  while (result.type !== ActionType.Found) {
+  while (result.type !== Algo.ActionType.Found) {
     result = algo.next();
   }
 
@@ -86,7 +84,7 @@ test("short path", (t) => {
   ]);
 });
 
-test("no steps", (t) => {
+test("no path", (t) => {
   const start = { x: 0, y: 0 };
   const end = { x: 2, y: 2 };
   const grid = Array(10).fill(1);
@@ -109,5 +107,5 @@ test("no steps", (t) => {
 
   let result = algo.next();
 
-  t.is(result.type, ActionType.NoMas);
+  t.is(result.type, Algo.ActionType.NoMas);
 });

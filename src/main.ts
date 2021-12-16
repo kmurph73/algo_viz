@@ -1,5 +1,5 @@
 import { grid, state } from "./constants.js";
-import { assignHTMLElements, attachEvents } from "./events/clickButton.js";
+import { assignHTMLElements, attachEvents } from "./events/handleEvents.js";
 import { mousedown, mousemove, mouseup } from "./events/mouse.js";
 import { attachGrid } from "./grid/attachGrid.js";
 import { drawGrid, drawGutterNumbers, drawNodes } from "./grid/drawGrid.js";

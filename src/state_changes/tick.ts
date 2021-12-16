@@ -1,9 +1,6 @@
-import {
-  ActionType,
-  AlgoNode,
-  AlgoTick,
-} from "../algos/IterableLazyDijkstra.js";
-import { initDijkstra, walkToDest } from "../app_util/appDjikstra.js";
+import { Algo } from "../algos/algo_types.js";
+import { walkToDest } from "../app_util/app_util.js";
+import { initDijkstra } from "../app_util/initDjikstra.js";
 import { state, grid, buttons } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
 
@@ -19,10 +16,10 @@ export const clickTick = (): void => {
   handleTick(tile, next);
 };
 
-export const handleTick = (tile: Tile, next: AlgoTick): void => {
+export const handleTick = (tile: Tile, next: Algo.Tick): void => {
   const classList = tile.td.classList;
 
-  if (ActionType.Found === next.type) {
+  if (Algo.ActionType.Found === next.type) {
     if (state.currentLoop) {
       clearInterval(state.currentLoop);
       state.currentLoop = undefined;
@@ -41,7 +38,7 @@ export const handleTick = (tile: Tile, next: AlgoTick): void => {
     return;
   }
 
-  if (next.type === ActionType.Visit) {
+  if (next.type === Algo.ActionType.Visit) {
     classList.remove("queued");
     classList.add("currentnode");
 

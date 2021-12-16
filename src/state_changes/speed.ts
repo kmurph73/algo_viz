@@ -22,6 +22,6 @@ export const getSpeed = (): number => {
     case "medium":
       return 30;
     case "fast":
-      return 1;
+      return 10;
   }
 };
