@@ -29,7 +29,6 @@ test("PriorityQueue", (t) => {
   const node = q.getFront()!;
 
   t.is(node.nextId, "3,3");
-  t.is(q.tailId, "5,6");
 
   t.deepEqual(q.toArr(), [
     { id: "1,1", value: 1 },

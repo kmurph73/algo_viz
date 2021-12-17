@@ -71,6 +71,10 @@ td.tile.selected {
   background-color: yellow !important;
 }
 
+.align-center {
+  text-align: center;
+}
+
 td.gutter {
   border: 0;
 }

@@ -1,18 +1,15 @@
 export class PriorityQueue {
     store;
     headId;
-    tailId;
     length;
     constructor() {
         this.store = new Map();
         this.headId = null;
-        this.tailId = null;
         this.length = 0;
     }
     enqueue(id, node) {
         if (!this.headId) {
             this.headId = id;
-            this.tailId = id;
             this.store.set(id, { thing: node, nextId: null });
             this.length += 1;
             return;
@@ -25,7 +22,6 @@ export class PriorityQueue {
             const next = this.getNode(nextId);
             if (next.thing.value <= val) {
                 tail = next;
-                tailId = nextId;
                 nextId = next.nextId;
             }
             else {
@@ -37,9 +33,6 @@ export class PriorityQueue {
         }
         else {
             this.headId = id;
-        }
-        if (nextId === null) {
-            this.tailId = id;
         }
         this.store.set(id, { thing: node, nextId });
         this.length += 1;

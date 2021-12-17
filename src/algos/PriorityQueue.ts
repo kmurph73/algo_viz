@@ -8,20 +8,17 @@ type Store<T> = Map<string, QueueNode<T>>;
 export class PriorityQueue<T extends { value: number }> {
   store: Store<T>;
   headId: string | null;
-  tailId: string | null;
   length: number;
 
   constructor() {
     this.store = new Map();
     this.headId = null;
-    this.tailId = null;
     this.length = 0;
   }
 
   enqueue(id: string, node: T): void {
     if (!this.headId) {
       this.headId = id;
-      this.tailId = id;
       this.store.set(id, { thing: node, nextId: null });
       this.length += 1;
 
@@ -39,7 +36,6 @@ export class PriorityQueue<T extends { value: number }> {
 
       if (next.thing.value <= val) {
         tail = next;
-        tailId = nextId;
         nextId = next.nextId;
       } else {
         break;
@@ -50,10 +46,6 @@ export class PriorityQueue<T extends { value: number }> {
       tail.nextId = id;
     } else {
       this.headId = id;
-    }
-
-    if (nextId === null) {
-      this.tailId = id;
     }
 
     this.store.set(id, { thing: node, nextId });

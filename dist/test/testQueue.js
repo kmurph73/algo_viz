@@ -21,7 +21,6 @@ test("PriorityQueue", (t) => {
     q.enqueue("5,6", { value: 20 });
     const node = q.getFront();
     t.is(node.nextId, "3,3");
-    t.is(q.tailId, "5,6");
     t.deepEqual(q.toArr(), [
         { id: "1,1", value: 1 },
         { id: "3,3", value: 10 },
