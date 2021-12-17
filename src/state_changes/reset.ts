@@ -1,4 +1,4 @@
-import { state, buttons } from "../constants.js";
+import { state, html } from "../constants.js";
 import { resetGrid } from "../grid/resetGrid.js";
 
 export const clickReset = () => {
@@ -11,6 +11,6 @@ export const clickReset = () => {
     state.currentLoop = undefined;
   }
 
-  buttons.go!.innerText = "go";
-  buttons.go!.disabled = false;
+  html.go!.innerText = "go";
+  html.go!.disabled = false;
 };

@@ -31,8 +31,6 @@ test("PriorityQueue", (t) => {
   t.is(node.nextId, "3,3");
   t.is(q.tailId, "5,6");
 
-  console.log(q.toArr());
-  console.log(q.store);
   t.deepEqual(q.toArr(), [
     { id: "1,1", value: 1 },
     { id: "3,3", value: 10 },

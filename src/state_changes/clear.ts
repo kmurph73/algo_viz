@@ -1,4 +1,4 @@
-import { state, buttons } from "../constants.js";
+import { state, html } from "../constants.js";
 import { clearGrid } from "../grid/clearGrid.js";
 
 export const clickClear = () => {
@@ -11,6 +11,6 @@ export const clickClear = () => {
     state.currentLoop = undefined;
   }
 
-  buttons.go!.disabled = false;
-  buttons.go!.innerText = "go";
+  html.go!.disabled = false;
+  html.go!.innerText = "go";
 };

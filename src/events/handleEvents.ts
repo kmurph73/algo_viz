@@ -1,4 +1,4 @@
-import { buttons, checkboxes, selects } from "../constants.js";
+import { html } from "../constants.js";
 import { changeAlgo } from "../state_changes/algo.js";
 import { clickClear } from "../state_changes/clear.js";
 import { changeDiagonal } from "../state_changes/diagonal.js";
@@ -9,31 +9,31 @@ import { clickTick } from "../state_changes/tick.js";
 import { unwrap } from "../util/util.js";
 
 export const assignHTMLElements = (): void => {
-  buttons.go = unwrap(document.getElementById("go")) as HTMLButtonElement;
-  buttons.tick = unwrap(document.getElementById("tick")) as HTMLButtonElement;
-  buttons.reset = unwrap(document.getElementById("reset")) as HTMLButtonElement;
-  buttons.clear = unwrap(document.getElementById("clear")) as HTMLButtonElement;
+  html.go = unwrap(document.getElementById("go")) as HTMLButtonElement;
+  html.tick = unwrap(document.getElementById("tick")) as HTMLButtonElement;
+  html.reset = unwrap(document.getElementById("reset")) as HTMLButtonElement;
+  html.clear = unwrap(document.getElementById("clear")) as HTMLButtonElement;
 
-  selects.speed = unwrap(
+  html.speed = unwrap(
     document.getElementById("speed_select")
   ) as HTMLSelectElement;
-  selects.algo = unwrap(
+  html.algo = unwrap(
     document.getElementById("algo_select")
   ) as HTMLSelectElement;
 
-  checkboxes.diagonal = unwrap(
+  html.diagonal = unwrap(
     document.getElementById("diagonal")
   ) as HTMLSelectElement;
 };
 
 export const attachEvents = (): void => {
-  buttons.go!.addEventListener("click", clickGoButton);
-  buttons.tick!.addEventListener("click", clickTick);
-  buttons.reset!.addEventListener("click", clickReset);
-  buttons.clear!.addEventListener("click", clickClear);
+  html.go!.addEventListener("click", clickGoButton);
+  html.tick!.addEventListener("click", clickTick);
+  html.reset!.addEventListener("click", clickReset);
+  html.clear!.addEventListener("click", clickClear);
 
-  selects.speed!.addEventListener("change", changeSpeed);
-  selects.algo!.addEventListener("change", changeAlgo);
+  html.speed!.addEventListener("change", changeSpeed);
+  html.algo!.addEventListener("change", changeAlgo);
 
-  checkboxes.diagonal!.addEventListener("change", changeDiagonal);
+  html.diagonal!.addEventListener("change", changeDiagonal);
 };

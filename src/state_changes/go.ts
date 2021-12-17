@@ -1,15 +1,16 @@
 import { Algo } from "../algos/algo_types.js";
 import { IterableAStar } from "../algos/IterableAStar.js";
 import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
+import { setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
-import { buttons, checkboxes, grid, selects, state } from "../constants.js";
+import { html, grid, state } from "../constants.js";
 import { clickClear } from "./clear.js";
 import { getSpeed } from "./speed.js";
 import { handleTick } from "./tick.js";
 
 export const clickGoButton = () => {
-  const goButton = buttons.go!;
+  const goButton = html.go!;
   const done =
     state.tickType === Algo.ActionType.NoMas ||
     state.tickType === Algo.ActionType.Found;
@@ -22,10 +23,8 @@ export const clickGoButton = () => {
     // stop clicked
     clearInterval(state.currentLoop);
     state.currentLoop = undefined;
-    buttons.reset!.disabled = false;
-    buttons.tick!.disabled = false;
-    checkboxes.diagonal!.disabled = false;
-    selects.algo!.disabled = false;
+
+    setDisabled(["reset", "tick", "diagonal", "algo"], false);
 
     goButton.innerText = "go";
   } else if (state.currentAlgo) {
@@ -43,10 +42,8 @@ export const startLooping = (
   algo: IterableLazyDijkstra | IterableAStar
 ): void => {
   const speed = getSpeed();
-  buttons.tick!.disabled = true;
-  buttons.reset!.disabled = true;
-  selects.algo!.disabled = true;
-  checkboxes.diagonal!.disabled = true;
+
+  setDisabled(["tick", "reset", "algo", "diagonal"], true);
 
   const loop = setInterval(() => {
     const next = algo.next();

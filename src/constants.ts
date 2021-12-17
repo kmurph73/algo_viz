@@ -2,43 +2,33 @@ import { Algo } from "./algos/algo_types.js";
 import { Grid, TileType } from "./grid/Grid.js";
 import { State } from "./types.js";
 
-export const NumRows = 20;
-export const NumColumns = 20;
+export const NumRows = 16;
+export const NumColumns = 24;
 
-export const initialStartPoint = { x: 1, y: 10 };
-export const initialEndPoint = { x: 12, y: 10 };
+export const initialStartPoint = { x: 1, y: 8 };
+export const initialEndPoint = { x: 12, y: 8 };
 
 export const grid = new Grid(initialStartPoint, initialEndPoint);
 
-type Buttons = {
+export type UserInput = {
   go: HTMLButtonElement | null;
   tick: HTMLButtonElement | null;
   reset: HTMLButtonElement | null;
   clear: HTMLButtonElement | null;
-};
 
-type Selects = {
   speed: HTMLSelectElement | null;
   algo: HTMLSelectElement | null;
-};
 
-type Checkboxes = {
   diagonal: HTMLSelectElement | null;
 };
 
-export const buttons: Buttons = {
+export const html: UserInput = {
   go: null,
   tick: null,
   reset: null,
   clear: null,
-};
-
-export const selects: Selects = {
   speed: null,
   algo: null,
-};
-
-export const checkboxes: Checkboxes = {
   diagonal: null,
 };
 

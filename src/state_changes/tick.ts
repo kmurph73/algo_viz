@@ -1,15 +1,9 @@
 import { Algo } from "../algos/algo_types.js";
 import { walkToDest } from "../app_util/app_util.js";
+import { setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
-import {
-  state,
-  grid,
-  buttons,
-  searchIsDone,
-  checkboxes,
-  selects,
-} from "../constants.js";
+import { state, grid, html, searchIsDone } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
 import { clickClear } from "./clear.js";
 
@@ -53,12 +47,8 @@ export const handleTick = (tile: Tile, next: Algo.Tick): void => {
       walkToDest(path);
     }
 
-    buttons.go!.disabled = false;
-    buttons.go!.innerText = "go";
-    buttons.tick!.disabled = false;
-    buttons.reset!.disabled = false;
-    checkboxes.diagonal!.disabled = false;
-    selects.algo!.disabled = false;
+    setDisabled(["go", "tick", "reset", "diagonal", "algo"], false);
+    html.go!.innerText = "go";
 
     return;
   }
