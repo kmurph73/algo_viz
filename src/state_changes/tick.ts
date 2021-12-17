@@ -8,6 +8,7 @@ import {
   buttons,
   searchIsDone,
   checkboxes,
+  selects,
 } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
 import { clickClear } from "./clear.js";
@@ -57,6 +58,7 @@ export const handleTick = (tile: Tile, next: Algo.Tick): void => {
     buttons.tick!.disabled = false;
     buttons.reset!.disabled = false;
     checkboxes.diagonal!.disabled = false;
+    selects.algo!.disabled = false;
 
     return;
   }

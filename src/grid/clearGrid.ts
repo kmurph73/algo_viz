@@ -1,10 +1,18 @@
-import { checkboxes, grid, NumColumns, NumRows, state } from "../constants.js";
+import {
+  checkboxes,
+  grid,
+  NumColumns,
+  NumRows,
+  selects,
+  state,
+} from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 
 export const clearGrid = (): void => {
   state.currentVisitedTile = undefined;
   checkboxes.diagonal!.disabled = false;
+  selects.algo!.disabled = false;
 
   for (let y = 0; y <= NumRows; y++) {
     for (let x = 0; x <= NumColumns; x++) {
