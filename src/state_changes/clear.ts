@@ -1,8 +1,8 @@
 import { state, buttons } from "../constants.js";
-import { resetGrid } from "../grid/resetGrid.js";
+import { clearGrid } from "../grid/clearGrid.js";
 
-export const clickReset = () => {
-  resetGrid();
+export const clickClear = () => {
+  clearGrid();
   state.currentAlgo = undefined;
   state.tickType = undefined;
 
@@ -11,6 +11,6 @@ export const clickReset = () => {
     state.currentLoop = undefined;
   }
 
-  buttons.go!.innerText = "go";
   buttons.go!.disabled = false;
+  buttons.go!.innerText = "go";
 };

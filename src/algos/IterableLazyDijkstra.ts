@@ -95,4 +95,8 @@ export class IterableLazyDijkstra {
 
     return this.visitNext();
   }
+
+  isDijkstra(): this is IterableLazyDijkstra {
+    return true;
+  }
 }

@@ -17,7 +17,8 @@
 		<div class='d-flex space-children'>
 			<button id='go'>go</button>
 			<button id='tick'>tick</button>
-			<button id='reset'>reset</button>
+			<button id='clear'>clear</button>
+			<button id='reset'>reset to default</button>
 
 			<select id='speed_select'>
 				<option>slow</option>
@@ -29,8 +30,14 @@
 				<option>Djikstra</option>
 				<option selected>A*</option>
 			</select>
-			<!-- <button id='save'>save</button> -->
+
+			<div class="d-flex">
+				<input type="checkbox" id="diagonal" />
+
+				<label for='diagonal'>diagonal</label>
+			</div>
 		</div>
+
 		<div class='mt-2'>
 			<div class='d-flex'>
 				<div class='box queued'></div>

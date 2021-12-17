@@ -1,18 +1,28 @@
+import { Algo } from "../algos/algo_types.js";
 import { IterableAStar } from "../algos/IterableAStar.js";
 import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
-import { buttons, grid, state } from "../constants.js";
+import { buttons, checkboxes, grid, state } from "../constants.js";
+import { clickClear } from "./clear.js";
 import { getSpeed } from "./speed.js";
 import { handleTick } from "./tick.js";
 
 export const clickGoButton = () => {
   const goButton = buttons.go!;
-  if (state.currentLoop) {
+  const done =
+    state.tickType === Algo.ActionType.NoMas ||
+    state.tickType === Algo.ActionType.Found;
+
+  if (done) {
+    clickClear();
+    clickGoButton();
+  } else if (state.currentLoop) {
     clearInterval(state.currentLoop);
     state.currentLoop = undefined;
     buttons.reset!.disabled = false;
     buttons.tick!.disabled = false;
+    checkboxes.diagonal!.disabled = false;
     goButton.innerText = "go";
   } else if (state.currentAlgo) {
     goButton.innerText = "stop";
@@ -29,6 +39,7 @@ export const startLooping = (
   const speed = getSpeed();
   buttons.tick!.disabled = true;
   buttons.reset!.disabled = true;
+  checkboxes.diagonal!.disabled = true;
 
   const loop = setInterval(() => {
     const next = algo.next();

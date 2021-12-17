@@ -1,4 +1,9 @@
-import { NumColumns, NumRows } from "../constants.js";
+import {
+  initialEndPoint,
+  initialStartPoint,
+  NumColumns,
+  NumRows,
+} from "../constants.js";
 import { Point } from "../structs/point.js";
 
 export enum TileType {
@@ -25,18 +30,15 @@ export const tileTexts = {
 
 type localJSON = { walls: Array<[number, number]>; start: Point; end: Point };
 
-export const initialStartPoint = { x: 1, y: 1 };
-export const initialEndPoint = { x: 10, y: 10 };
-
 export class Grid {
   tiles: Tile[][];
   startPoint: Point;
   endPoint: Point;
 
-  constructor() {
+  constructor(start: Point, end: Point) {
     this.tiles = [];
-    this.startPoint = initialStartPoint;
-    this.endPoint = initialEndPoint;
+    this.startPoint = start;
+    this.endPoint = end;
   }
 
   startTile(): Tile | null {

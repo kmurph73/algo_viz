@@ -12,8 +12,6 @@ export namespace Algo {
     end: Point;
     canEnterTile: (x: number, y: number) => boolean;
     getNeighbors: (x: number, y: number) => Point[];
-
-    diagonal: boolean;
   };
 
   export enum ActionType {

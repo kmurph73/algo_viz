@@ -1,18 +1,10 @@
-import {
-  grid,
-  initialEndPoint,
-  initialStartPoint,
-  NumColumns,
-  NumRows,
-  state,
-} from "../constants.js";
+import { checkboxes, grid, NumColumns, NumRows, state } from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 
-export const resetGrid = (): void => {
-  grid.startPoint = initialStartPoint;
-  grid.endPoint = initialEndPoint;
+export const clearGrid = (): void => {
   state.currentVisitedTile = undefined;
+  checkboxes.diagonal!.disabled = false;
 
   for (let y = 0; y <= NumRows; y++) {
     for (let x = 0; x <= NumColumns; x++) {
@@ -30,9 +22,9 @@ export const resetGrid = (): void => {
       );
 
       const type = ((): TileType => {
-        if (pointsEq(tile.point, initialStartPoint)) {
+        if (pointsEq(tile.point, grid.startPoint)) {
           return TileType.Start;
-        } else if (pointsEq(tile.point, initialEndPoint)) {
+        } else if (pointsEq(tile.point, grid.endPoint)) {
           return TileType.End;
         } else {
           return TileType.Empty;

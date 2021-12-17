@@ -1,6 +1,7 @@
 import { pointsEq } from "../structs/point.js";
 import { Algo } from "./algo_types.js";
 import { getPath } from "./algo_util.js";
+import { IterableLazyDijkstra } from "./IterableLazyDijkstra.js";
 import { PriorityQueue } from "./PriorityQueue.js";
 
 type Point = { x: number; y: number };
@@ -116,5 +117,9 @@ export class IterableAStar {
     }
 
     return this.visitNext();
+  }
+
+  isDijkstra(): this is IterableLazyDijkstra {
+    return false;
   }
 }

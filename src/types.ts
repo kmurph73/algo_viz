@@ -1,3 +1,4 @@
+import { Algo } from "./algos/algo_types";
 import { IterableAStar } from "./algos/IterableAStar";
 import { IterableLazyDijkstra } from "./algos/IterableLazyDijkstra";
 import { Grid, Tile, TileType } from "./grid/Grid";
@@ -16,9 +17,10 @@ declare global {
 export type State = {
   dragging: boolean;
   currentType: TileType | null;
-  allowDiagonal: boolean;
+  diagonal: boolean;
   currentAlgo?: IterableLazyDijkstra | IterableAStar;
   currentLoop?: number;
+  tickType?: Algo.ActionType;
   currentVisitedTile?: Tile;
   speed: Speed;
   algo: AlgoType;

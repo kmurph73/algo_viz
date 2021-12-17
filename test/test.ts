@@ -26,7 +26,6 @@ test("short path", (t) => {
     end,
     canEnterTile,
     getNeighbors: getManhattanNeighbors,
-    diagonal: false,
   });
 
   let result = algo.next(); // 1
@@ -102,7 +101,6 @@ test("no path", (t) => {
     end,
     canEnterTile,
     getNeighbors: getManhattanNeighbors,
-    diagonal: false,
   });
 
   let result = algo.next();

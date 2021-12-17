@@ -19,3 +19,14 @@ export const manhattanDistance = (node1: Point, node2: Point) => {
 
   return dx + dy;
 };
+
+export const diagonalDistance = (p1: Point, p2: Point) => {
+  return Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
+};
+
+export const euclideanDistance = (p1: Point, p2: Point) => {
+  let y = p2.x - p1.x;
+  let x = p2.y - p1.y;
+
+  return Math.sqrt(x * x + y * y);
+};
