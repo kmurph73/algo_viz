@@ -45,7 +45,7 @@ export const startLooping = (
 
   setDisabled(["tick", "reset", "algo", "diagonal"], true);
 
-  const loop = setInterval(() => {
+  const loop = window.setInterval(() => {
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
 

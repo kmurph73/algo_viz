@@ -36,7 +36,7 @@ export const clickGoButton = () => {
 export const startLooping = (algo) => {
     const speed = getSpeed();
     setDisabled(["tick", "reset", "algo", "diagonal"], true);
-    const loop = setInterval(() => {
+    const loop = window.setInterval(() => {
         const next = algo.next();
         const tile = grid.atPoint(next.point);
         handleTick(tile, next);

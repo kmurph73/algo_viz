@@ -1,7 +1,7 @@
 import {
   grid,
-  initialEndPoint,
-  initialStartPoint,
+  defaultEndpoint,
+  defaultStartPoint,
   NumColumns,
   NumRows,
   state,
@@ -10,8 +10,8 @@ import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 
 export const resetGrid = (): void => {
-  grid.startPoint = initialStartPoint;
-  grid.endPoint = initialEndPoint;
+  grid.startPoint = defaultStartPoint;
+  grid.endPoint = defaultEndpoint;
   state.currentVisitedTile = undefined;
 
   for (let y = 0; y <= NumRows; y++) {
@@ -30,9 +30,9 @@ export const resetGrid = (): void => {
       );
 
       const type = ((): TileType => {
-        if (pointsEq(tile.point, initialStartPoint)) {
+        if (pointsEq(tile.point, defaultStartPoint)) {
           return TileType.Start;
-        } else if (pointsEq(tile.point, initialEndPoint)) {
+        } else if (pointsEq(tile.point, defaultEndpoint)) {
           return TileType.End;
         } else {
           return TileType.Empty;

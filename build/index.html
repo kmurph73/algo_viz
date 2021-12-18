@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link href="main1639866575634.css" rel="stylesheet">
+		<link rel="icon" href="favicon.ico">
+		<script id="main" async="" defer="" type="module" src="main1639866575634.js"></script>
+	</head>
+	<body>
+		<div id="grid_container" unselectable="on" onselectstart="return false;"></div>
+
+		<div class="d-flex space-children">
+			<button id="go">go</button>
+			<button id="tick">tick</button>
+			<button id="clear">clear</button>
+			<button id="reset">reset to default</button>
+
+			<select id="speed_select">
+				<option>slow</option>
+				<option selected="">medium</option>
+				<option>fast</option>
+			</select>
+
+			<select id="algo_select">
+				<option selected="">Djikstra</option>
+				<option>A*</option>
+			</select>
+
+			<div class="d-flex">
+				<input type="checkbox" id="diagonal">
+
+				<label for="diagonal">diagonal</label>
+			</div>
+		</div>
+
+		<div class="mt-2">
+			<div class="d-flex">
+				<div class="box queued"></div>
+				<div class="ms-1">queued up for later visit</div>
+			</div>
+
+			<div class="d-flex mt-1">
+				<div class="box visited"></div>
+				<div class="ms-1">visited</div>
+			</div>
+
+			<div class="d-flex mt-1">
+				<div class="box currentnode"></div>
+				<div class="ms-1">current node being visited</div>
+			</div>
+
+			<div class="d-flex mt-1">
+				<div class="box yellow-brick"></div>
+				<div class="ms-1">yellow brick road</div>
+			</div>
+		</div>
+
+		<div class="mt-1">
+			<div class="d-flex"><div class="box align-center">@</div>start</div>
+			<div class="d-flex"><div class="box align-center">$</div>finish</div>
+			<div class="d-flex"><div class="box align-center">#</div>wall (click/drag on tiles to draw)</div>
+		</div>
+
+    <script>
+			const script = document.getElementById('main');
+
+			script.onload = () => {
+				window.main();
+			}
+    </script>
+	
+</body></html>

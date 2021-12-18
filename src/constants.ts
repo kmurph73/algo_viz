@@ -5,20 +5,18 @@ import { State } from "./types.js";
 export const NumRows = 16;
 export const NumColumns = 24;
 
-export const initialStartPoint = { x: 1, y: 8 };
-export const initialEndPoint = { x: 12, y: 8 };
+export const defaultStartPoint = { x: 1, y: 8 };
+export const defaultEndpoint = { x: 12, y: 8 };
 
-export const grid = new Grid(initialStartPoint, initialEndPoint);
+export const grid = new Grid(defaultStartPoint, defaultEndpoint);
 
 export type UserInput = {
   go: HTMLButtonElement | null;
   tick: HTMLButtonElement | null;
   reset: HTMLButtonElement | null;
   clear: HTMLButtonElement | null;
-
   speed: HTMLSelectElement | null;
   algo: HTMLSelectElement | null;
-
   diagonal: HTMLSelectElement | null;
 };
 

@@ -1,6 +1,6 @@
 import {
-  initialEndPoint,
-  initialStartPoint,
+  defaultEndpoint,
+  defaultStartPoint,
   NumColumns,
   NumRows,
 } from "../constants.js";

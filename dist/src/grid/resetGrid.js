@@ -1,9 +1,9 @@
-import { grid, initialEndPoint, initialStartPoint, NumColumns, NumRows, state, } from "../constants.js";
+import { grid, defaultEndpoint, defaultStartPoint, NumColumns, NumRows, state, } from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 export const resetGrid = () => {
-    grid.startPoint = initialStartPoint;
-    grid.endPoint = initialEndPoint;
+    grid.startPoint = defaultStartPoint;
+    grid.endPoint = defaultEndpoint;
     state.currentVisitedTile = undefined;
     for (let y = 0; y <= NumRows; y++) {
         for (let x = 0; x <= NumColumns; x++) {
@@ -13,10 +13,10 @@ export const resetGrid = () => {
             }
             tile.td.classList.remove("visited", "queued", "currentnode", "yellow-brick");
             const type = (() => {
-                if (pointsEq(tile.point, initialStartPoint)) {
+                if (pointsEq(tile.point, defaultStartPoint)) {
                     return TileType.Start;
                 }
-                else if (pointsEq(tile.point, initialEndPoint)) {
+                else if (pointsEq(tile.point, defaultEndpoint)) {
                     return TileType.End;
                 }
                 else {
