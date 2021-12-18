@@ -23,13 +23,15 @@ const html = fs.readFileSync("./index.html", "utf8");
 
 const dom = new JSDOM(html);
 
-const querySelector = dom.window.document.querySelector;
-
-const script = querySelector("script#main") as HTMLScriptElement;
+const script = dom.window.document.querySelector(
+  "script#main"
+) as HTMLScriptElement;
 
 script.src = jsname;
 
-const css = querySelector("link[rel=stylesheet]") as HTMLLinkElement;
+const css = dom.window.document.querySelector(
+  "link[rel=stylesheet]"
+) as HTMLLinkElement;
 
 css.href = cssname;
 
