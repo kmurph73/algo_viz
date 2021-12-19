@@ -1,2 +1,3 @@
 #!/bin/sh
-git subtree push --prefix build origin ghpage
+git subtree split --branch ghpageplz --prefix build/
+git push origin ghpageplz

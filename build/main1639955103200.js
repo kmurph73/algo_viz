@@ -91,14 +91,16 @@
     reset: null,
     speed: null,
     algo: null,
-    diagonal: null
+    diagonal: null,
+    showWeights: null
   };
   var state = {
     dragging: false,
     currentType: TileType.Wall,
     diagonal: false,
     speed: "medium",
-    algo: "Djikstra"
+    algo: "Djikstra",
+    showCost: false
   };
   var searchIsDone = () => {
     if (state.tickType == null) {
@@ -213,6 +215,12 @@
       const element = html[elements[index]];
       element.disabled = disabled;
     }
+  };
+  var enable = (elements) => {
+    setDisabled(elements, false);
+  };
+  var disable = (elements) => {
+    setDisabled(elements, true);
   };
 
   // dist/src/algos/PriorityQueue.js
@@ -346,9 +354,13 @@
         this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
         this.currentNeighborsLength = this.currentNeighbors.length;
         this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit };
+        return { point: nextPoint, type: Algo.ActionType.Visit, weight: null };
       } else {
-        return { point: this.currentNode.point, type: Algo.ActionType.NoMas };
+        return {
+          point: this.currentNode.point,
+          type: Algo.ActionType.NoMas,
+          weight: null
+        };
       }
     }
     next() {
@@ -362,7 +374,7 @@
             value: this.currentNode.value + 1
           };
           const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path };
+          return { point, type: Algo.ActionType.Found, path, weight: node.value };
         }
         const { x, y } = point;
         this.neighborIndex += 1;
@@ -384,7 +396,7 @@
             value: g + h
           };
           this.awaitingVisit.enqueue(`${x},${y}`, node);
-          return { point, type: Algo.ActionType.Enqueued };
+          return { point, type: Algo.ActionType.Enqueued, weight: node.value };
         }
       }
       return this.visitNext();
@@ -509,9 +521,13 @@
         this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
         this.currentNeighborsLength = this.currentNeighbors.length;
         this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit };
+        return { point: nextPoint, type: Algo.ActionType.Visit, weight: null };
       } else {
-        return { point: this.currentNode.point, type: Algo.ActionType.NoMas };
+        return {
+          point: this.currentNode.point,
+          type: Algo.ActionType.NoMas,
+          weight: null
+        };
       }
     }
     next() {
@@ -525,7 +541,7 @@
             value: this.currentNode.value + 1
           };
           const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path };
+          return { point, type: Algo.ActionType.Found, path, weight: node.value };
         }
         const { x, y } = point;
         this.neighborIndex += 1;
@@ -541,7 +557,7 @@
             value: this.currentNode.value + 1
           };
           this.awaitingVisit.enqueue(id, node);
-          return { point, type: Algo.ActionType.Enqueued };
+          return { point, type: Algo.ActionType.Enqueued, weight: node.value };
         }
       }
       return this.visitNext();
@@ -567,7 +583,7 @@
   // dist/src/grid/clearGrid.js
   var clearGrid = ({ keepWalls }) => {
     state.currentVisitedTile = void 0;
-    setDisabled(["diagonal", "algo"], false);
+    enable(["diagonal", "algo"]);
     for (let y = 0; y <= NumRows; y++) {
       for (let x = 0; x <= NumColumns; x++) {
         const tile = grid.at(x, y);
@@ -640,6 +656,9 @@
     const algo = state.currentAlgo;
     const next = algo.next();
     const tile = grid.atPoint(next.point);
+    if (next.weight) {
+      tile.weight = next.weight;
+    }
     handleTick(tile, next);
   };
   var handleTick = (tile, next) => {
@@ -658,7 +677,7 @@
       } else if (path) {
         walkToDest(path);
       }
-      setDisabled(["go", "tick", "reset", "diagonal", "algo"], false);
+      enable(["go", "tick", "reset", "diagonal", "algo"]);
       html.go.innerText = "go";
       return;
     }
@@ -666,12 +685,15 @@
       classList.remove("queued");
       classList.add("currentnode");
       if (state.currentVisitedTile) {
-        const classList = state.currentVisitedTile.td.classList;
-        classList.remove("currentnode");
-        classList.add("visited");
+        const classList2 = state.currentVisitedTile.td.classList;
+        classList2.remove("currentnode");
+        classList2.add("visited");
       }
       state.currentVisitedTile = tile;
     } else {
+      if (state.showCost && next.weight) {
+        tile.td.innerText = next.weight.toString();
+      }
       classList.add("queued");
     }
   };
@@ -686,7 +708,7 @@
     } else if (state.currentLoop) {
       clearInterval(state.currentLoop);
       state.currentLoop = void 0;
-      setDisabled(["reset", "tick", "diagonal", "algo"], false);
+      enable(["reset", "tick", "diagonal", "algo"]);
       goButton.innerText = "go";
     } else if (state.currentAlgo) {
       goButton.innerText = "stop";
@@ -698,10 +720,13 @@
   };
   var startLooping = (algo) => {
     const speed = getSpeed();
-    setDisabled(["tick", "reset", "algo", "diagonal"], true);
+    disable(["tick", "reset", "algo", "diagonal"]);
     const loop = window.setInterval(() => {
       const next = algo.next();
       const tile = grid.atPoint(next.point);
+      if (next.weight) {
+        tile.weight = next.weight;
+      }
       handleTick(tile, next);
     }, speed);
     state.currentLoop = loop;
@@ -757,6 +782,23 @@
     html.go.disabled = false;
   };
 
+  // dist/src/state_changes/showWeights.js
+  var changeShowWeights = (e) => {
+    const checkbox = e.target;
+    state.showCost = checkbox.checked;
+    for (let index = 0; index <= NumRows; index++) {
+      const row = grid.tiles[index];
+      for (let index2 = 0; index2 <= NumColumns; index2++) {
+        const tile = row[index2];
+        if (state.showCost && tile.weight) {
+          tile.td.innerText = tile.weight.toString();
+        } else if (!state.showCost && tile.weight) {
+          tile.td.innerText = "";
+        }
+      }
+    }
+  };
+
   // dist/src/util/util.js
   var unwrap = (value, errorMessage) => {
     if (value == null) {
@@ -774,6 +816,7 @@
     html.speed = unwrap(document.getElementById("speed_select"));
     html.algo = unwrap(document.getElementById("algo_select"));
     html.diagonal = unwrap(document.getElementById("diagonal"));
+    html.showWeights = unwrap(document.getElementById("show_cost"));
   };
   var attachEvents = () => {
     html.go.addEventListener("click", clickGoButton);
@@ -782,6 +825,7 @@
     html.speed.addEventListener("change", changeSpeed);
     html.algo.addEventListener("change", changeAlgo);
     html.diagonal.addEventListener("change", changeDiagonal);
+    html.showWeights.addEventListener("change", changeShowWeights);
   };
 
   // dist/src/events/mouse.js
@@ -940,7 +984,8 @@
         const tile = {
           td,
           point: { x, y },
-          type
+          type,
+          weight: null
         };
         tiles.push(tile);
       }
