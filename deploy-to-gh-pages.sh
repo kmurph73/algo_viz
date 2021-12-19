@@ -1,2 +1,2 @@
 #!/bin/sh
-git subtree push --prefix build origin realpage
+git subtree push --prefix build origin ghpage
