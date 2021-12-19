@@ -1,6 +1,6 @@
 import { Algo } from "../algos/algo_types.js";
 import { walkToDest } from "../app_util/app_util.js";
-import { setDisabled } from "../app_util/html_util.js";
+import { enable } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
 import { state, grid, html, searchIsDone } from "../constants.js";
@@ -23,6 +23,9 @@ export const clickTick = (): void => {
 
   const next = algo.next();
   const tile = grid.atPoint(next.point)!;
+  if (next.weight) {
+    tile.weight = next.weight;
+  }
   handleTick(tile, next);
 };
 
@@ -47,7 +50,7 @@ export const handleTick = (tile: Tile, next: Algo.Tick): void => {
       walkToDest(path);
     }
 
-    setDisabled(["go", "tick", "reset", "diagonal", "algo"], false);
+    enable(["go", "tick", "reset", "diagonal", "algo"]);
     html.go!.innerText = "go";
 
     return;
@@ -58,13 +61,17 @@ export const handleTick = (tile: Tile, next: Algo.Tick): void => {
     classList.add("currentnode");
 
     if (state.currentVisitedTile) {
-      const cl = state.currentVisitedTile.td.classList;
-      cl.remove("currentnode");
-      cl.add("visited");
+      const classList = state.currentVisitedTile.td.classList;
+      classList.remove("currentnode");
+      classList.add("visited");
     }
 
     state.currentVisitedTile = tile;
   } else {
+    if (state.showCost && next.weight) {
+      tile.td.innerText = next.weight.toString();
+    }
+
     classList.add("queued");
   }
 };

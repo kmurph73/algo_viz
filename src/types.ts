@@ -18,6 +18,7 @@ export type State = {
   dragging: boolean;
   currentType: TileType | null;
   diagonal: boolean;
+  showCost: boolean;
   currentAlgo?: IterableLazyDijkstra | IterableAStar;
   currentLoop?: number;
   tickType?: Algo.ActionType;

@@ -1,11 +1,11 @@
-import { setDisabled } from "../app_util/html_util.js";
+import { enable } from "../app_util/html_util.js";
 import { grid, NumColumns, NumRows, state } from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 
 export const clearGrid = ({ keepWalls }: { keepWalls: boolean }): void => {
   state.currentVisitedTile = undefined;
-  setDisabled(["diagonal", "algo"], false);
+  enable(["diagonal", "algo"]);
 
   for (let y = 0; y <= NumRows; y++) {
     for (let x = 0; x <= NumColumns; x++) {

@@ -10,3 +10,11 @@ export const setDisabled = (
     element.disabled = disabled;
   }
 };
+
+export const enable = (elements: Array<keyof UserInput>): void => {
+  setDisabled(elements, false);
+};
+
+export const disable = (elements: Array<keyof UserInput>): void => {
+  setDisabled(elements, true);
+};

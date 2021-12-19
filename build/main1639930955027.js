@@ -666,9 +666,9 @@
       classList.remove("queued");
       classList.add("currentnode");
       if (state.currentVisitedTile) {
-        const cl = state.currentVisitedTile.td.classList;
-        cl.remove("currentnode");
-        cl.add("visited");
+        const classList = state.currentVisitedTile.td.classList;
+        classList.remove("currentnode");
+        classList.add("visited");
       }
       state.currentVisitedTile = tile;
     } else {

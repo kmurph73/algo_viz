@@ -61,10 +61,12 @@ td.gutter {
 
 .visited {
   background-color: red;
+  color: white;
 }
 
 .queued {
   background-color: blue;
+  color: white;
 }
 
 .currentnode {
@@ -77,9 +79,10 @@ td.tile.selected {
 
 .yellow-brick {
   background-color: yellow !important;
+  color: black;
 }
 
-.align-center {
+.text-align-center {
   text-align: center;
 }
 
@@ -89,6 +92,10 @@ td.gutter {
 
 .d-flex {
   display: flex;
+}
+
+.align-items-center {
+  align-items: center;
 }
 
 .space-children > * {

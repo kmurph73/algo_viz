@@ -21,5 +21,10 @@ export namespace Algo {
     NoMas,
   }
 
-  export type Tick = { point: Point; type: ActionType; path?: Point[] };
+  export type Tick = {
+    point: Point;
+    type: ActionType;
+    weight: number | null;
+    path?: Point[];
+  };
 }

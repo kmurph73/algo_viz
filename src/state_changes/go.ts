@@ -1,11 +1,11 @@
 import { Algo } from "../algos/algo_types.js";
 import { IterableAStar } from "../algos/IterableAStar.js";
 import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
-import { setDisabled } from "../app_util/html_util.js";
+import { disable, enable, setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
 import { html, grid, state } from "../constants.js";
-import { clickClear, handleClear } from "./clear.js";
+import { handleClear } from "./clear.js";
 import { getSpeed } from "./speed.js";
 import { handleTick } from "./tick.js";
 
@@ -24,7 +24,7 @@ export const clickGoButton = () => {
     clearInterval(state.currentLoop);
     state.currentLoop = undefined;
 
-    setDisabled(["reset", "tick", "diagonal", "algo"], false);
+    enable(["reset", "tick", "diagonal", "algo"]);
 
     goButton.innerText = "go";
   } else if (state.currentAlgo) {
@@ -43,12 +43,15 @@ export const startLooping = (
 ): void => {
   const speed = getSpeed();
 
-  setDisabled(["tick", "reset", "algo", "diagonal"], true);
+  disable(["tick", "reset", "algo", "diagonal"]);
 
   const loop = window.setInterval(() => {
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
 
+    if (next.weight) {
+      tile.weight = next.weight;
+    }
     handleTick(tile, next);
   }, speed);
 

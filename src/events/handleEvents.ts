@@ -4,6 +4,7 @@ import { clickClear } from "../state_changes/clear.js";
 import { changeDiagonal } from "../state_changes/diagonal.js";
 import { clickGoButton } from "../state_changes/go.js";
 import { clickReset } from "../state_changes/reset.js";
+import { changeShowWeights } from "../state_changes/showWeights.js";
 import { changeSpeed } from "../state_changes/speed.js";
 import { clickTick } from "../state_changes/tick.js";
 import { unwrap } from "../util/util.js";
@@ -23,6 +24,10 @@ export const assignHTMLElements = (): void => {
   html.diagonal = unwrap(
     document.getElementById("diagonal")
   ) as HTMLSelectElement;
+
+  html.showWeights = unwrap(
+    document.getElementById("show_cost")
+  ) as HTMLSelectElement;
 };
 
 export const attachEvents = (): void => {
@@ -34,4 +39,5 @@ export const attachEvents = (): void => {
   html.algo!.addEventListener("change", changeAlgo);
 
   html.diagonal!.addEventListener("change", changeDiagonal);
+  html.showWeights!.addEventListener("change", changeShowWeights);
 };

@@ -53,7 +53,7 @@ export class IterableAStar {
     this.getNeighbors = getNeighbors;
   }
 
-  private visitNext(): { point: Point; type: Algo.ActionType } {
+  private visitNext(): Algo.Tick {
     const { x, y } = this.currentNode.point;
     this.visited[`${x},${y}`] = this.currentNode;
 
@@ -65,9 +65,13 @@ export class IterableAStar {
       this.currentNeighborsLength = this.currentNeighbors.length;
       this.neighborIndex = 0;
 
-      return { point: nextPoint, type: Algo.ActionType.Visit };
+      return { point: nextPoint, type: Algo.ActionType.Visit, weight: null };
     } else {
-      return { point: this.currentNode.point, type: Algo.ActionType.NoMas };
+      return {
+        point: this.currentNode.point,
+        type: Algo.ActionType.NoMas,
+        weight: null,
+      };
     }
   }
 
@@ -85,7 +89,7 @@ export class IterableAStar {
 
         const path = getPath(node);
 
-        return { point, type: Algo.ActionType.Found, path };
+        return { point, type: Algo.ActionType.Found, path, weight: node.value };
       }
 
       const { x, y } = point;
@@ -112,7 +116,7 @@ export class IterableAStar {
 
         this.awaitingVisit.enqueue(`${x},${y}`, node);
 
-        return { point, type: Algo.ActionType.Enqueued };
+        return { point, type: Algo.ActionType.Enqueued, weight: node.value };
       }
     }
 
