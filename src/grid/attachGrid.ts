@@ -28,8 +28,6 @@ export const attachGrid = (): void => {
         ? TileType.Gutter
         : TileType.Empty;
 
-      td.dataset.type = type.toString();
-
       const tile: Tile = {
         td,
         point: { x, y },

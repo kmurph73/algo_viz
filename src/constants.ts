@@ -14,7 +14,6 @@ export type UserInput = {
   go: HTMLButtonElement | null;
   tick: HTMLButtonElement | null;
   reset: HTMLButtonElement | null;
-  clear: HTMLButtonElement | null;
   speed: HTMLSelectElement | null;
   algo: HTMLSelectElement | null;
   diagonal: HTMLSelectElement | null;
@@ -24,7 +23,6 @@ export const html: UserInput = {
   go: null,
   tick: null,
   reset: null,
-  clear: null,
   speed: null,
   algo: null,
   diagonal: null,

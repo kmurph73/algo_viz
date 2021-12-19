@@ -39,7 +39,6 @@ export const drawGutterNumbers = (): void => {
       if (x === 0) {
         const tile = grid.at(x, y)!;
         tile.td.innerText = y.toString();
-        tile.td.dataset.type = TileType.Gutter.toString();
       }
     }
   }
@@ -50,10 +49,8 @@ export const drawNodes = (): void => {
   const endTile = grid.atPoint(grid.endPoint)!;
 
   startTile.td.innerText = "@";
-  startTile.td.dataset.type = TileType.Start.toString();
   startTile.type = TileType.Start;
 
   endTile.td.innerText = "$";
-  endTile.td.dataset.type = TileType.End.toString();
   endTile.type = TileType.End;
 };

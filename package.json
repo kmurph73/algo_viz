@@ -16,6 +16,7 @@
     "test": "NODE_ENV=test ava test ./dist/test/*.js",
     "testbug": "NODE_ENV=test ava debug --break ./dist/test/testQueue.js",
     "buildjs": "rimraf dist && tsc",
-    "buildapp": "rimraf build && yarn buildjs && node ./dist/scripts/build.js"
+    "buildapp": "rimraf build && yarn buildjs && node ./dist/scripts/build.js",
+    "deploy": "yarn buildapp && ./deploy-to-gh-pages.sh"
   }
 }

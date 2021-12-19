@@ -32,7 +32,6 @@ const moveNode = (origin: Tile, dest: Tile): void => {
   state.currentType = null;
   dest.td.innerText = char;
   dest.type = origin.type;
-  dest.td.dataset.type = origin.type.toString();
 
   const algo = state.currentAlgo;
 
@@ -81,6 +80,7 @@ export const mousedown = (event: Event) => {
         } else {
           state.dragging = true;
           state.currentType = TileType.Wall;
+          tile.type = TileType.Wall;
           tile.td.innerText = "#";
         }
         break;
@@ -92,6 +92,7 @@ export const mousedown = (event: Event) => {
         } else {
           state.dragging = true;
           state.currentType = TileType.Empty;
+          tile.type = TileType.Empty;
           tile.td.innerText = "";
         }
         break;
@@ -136,6 +137,8 @@ export const mouseup = (event: Event) => {
         }
         break;
     }
+  } else {
+    state.currentType === TileType.Wall;
   }
 };
 
@@ -157,7 +160,6 @@ export const mousemove = (event: Event) => {
 
         div.innerText = tileTexts[state.currentType];
         tile.type = state.currentType;
-        tile.td.dataset.type = state.currentType.toString();
       }
     }
   }

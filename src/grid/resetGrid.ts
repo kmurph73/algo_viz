@@ -40,7 +40,6 @@ export const resetGrid = (): void => {
       })();
 
       tile.type = type;
-      tile.td.dataset.type = type.toString();
       tile.td.innerText = tileTexts[type];
     }
   }

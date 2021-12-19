@@ -12,7 +12,6 @@ export const assignHTMLElements = (): void => {
   html.go = unwrap(document.getElementById("go")) as HTMLButtonElement;
   html.tick = unwrap(document.getElementById("tick")) as HTMLButtonElement;
   html.reset = unwrap(document.getElementById("reset")) as HTMLButtonElement;
-  html.clear = unwrap(document.getElementById("clear")) as HTMLButtonElement;
 
   html.speed = unwrap(
     document.getElementById("speed_select")
@@ -30,7 +29,6 @@ export const attachEvents = (): void => {
   html.go!.addEventListener("click", clickGoButton);
   html.tick!.addEventListener("click", clickTick);
   html.reset!.addEventListener("click", clickReset);
-  html.clear!.addEventListener("click", clickClear);
 
   html.speed!.addEventListener("change", changeSpeed);
   html.algo!.addEventListener("change", changeAlgo);

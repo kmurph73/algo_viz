@@ -1,9 +1,4 @@
-import {
-  defaultEndpoint,
-  defaultStartPoint,
-  NumColumns,
-  NumRows,
-} from "../constants.js";
+import { NumColumns, NumRows } from "../constants.js";
 import { Point } from "../structs/point.js";
 
 export enum TileType {
