@@ -3,7 +3,7 @@ import { grid, NumColumns, NumRows, state } from "../constants.js";
 import { pointsEq } from "../structs/point.js";
 import { tileTexts, TileType } from "./Grid.js";
 
-export const clearGrid = (): void => {
+export const clearGrid = ({ keepWalls }: { keepWalls: boolean }): void => {
   state.currentVisitedTile = undefined;
   setDisabled(["diagonal", "algo"], false);
 
@@ -27,6 +27,8 @@ export const clearGrid = (): void => {
           return TileType.Start;
         } else if (pointsEq(tile.point, grid.endPoint)) {
           return TileType.End;
+        } else if (tile.type === TileType.Wall && keepWalls) {
+          return TileType.Wall;
         } else {
           return TileType.Empty;
         }

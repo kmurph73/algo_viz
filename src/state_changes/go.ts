@@ -5,7 +5,7 @@ import { setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
 import { html, grid, state } from "../constants.js";
-import { clickClear } from "./clear.js";
+import { clickClear, handleClear } from "./clear.js";
 import { getSpeed } from "./speed.js";
 import { handleTick } from "./tick.js";
 
@@ -17,7 +17,7 @@ export const clickGoButton = () => {
 
   if (done) {
     // search is done, restart it
-    clickClear();
+    handleClear({ keepWalls: true });
     clickGoButton();
   } else if (state.currentLoop) {
     // stop clicked

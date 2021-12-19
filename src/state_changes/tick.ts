@@ -5,11 +5,11 @@ import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
 import { state, grid, html, searchIsDone } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
-import { clickClear } from "./clear.js";
+import { handleClear } from "./clear.js";
 
 export const clickTick = (): void => {
   if (searchIsDone()) {
-    clickClear();
+    handleClear({ keepWalls: true });
     clickTick();
 
     return;

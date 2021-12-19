@@ -1,8 +1,8 @@
 import { state, html } from "../constants.js";
 import { clearGrid } from "../grid/clearGrid.js";
 
-export const clickClear = () => {
-  clearGrid();
+export const handleClear = ({ keepWalls }: { keepWalls: boolean }) => {
+  clearGrid({ keepWalls });
   state.currentAlgo = undefined;
   state.tickType = undefined;
 
@@ -13,4 +13,8 @@ export const clickClear = () => {
 
   html.go!.disabled = false;
   html.go!.innerText = "go";
+};
+
+export const clickClear = () => {
+  handleClear({ keepWalls: false });
 };

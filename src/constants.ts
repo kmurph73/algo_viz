@@ -35,7 +35,7 @@ export const state: State = {
   currentType: TileType.Wall,
   diagonal: false,
   speed: "medium",
-  algo: "A*",
+  algo: "Djikstra",
 };
 
 export const searchIsDone = (): boolean => {
