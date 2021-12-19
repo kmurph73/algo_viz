@@ -1,15 +1,25 @@
+/* css/app.css */
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    "Liberation Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 }
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 #grid_container {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -17,84 +27,65 @@ body {
   user-select: none;
   -o-user-select: none;
 }
-
 .mt-1 {
   margin-top: 0.25rem !important;
 }
-
 .mt-2 {
   margin-top: 0.5rem !important;
 }
-
 .ms-1 {
   margin-left: 0.25rem !important;
 }
-
 .ms-2 {
   margin-left: 0.5rem !important;
 }
-
 .row {
   display: flex;
 }
-
 table.grid {
   border-collapse: collapse;
   cursor: default !important;
   border-spacing: 0;
 }
-
 table.grid td {
   padding: 0;
   height: 25px;
   width: 25px;
   text-align: center;
 }
-
 td.tile {
   border: 1px solid rgb(177, 177, 177);
 }
-
 td.gutter {
   font-size: 10px;
 }
-
 .visited {
   background-color: red;
 }
-
 .queued {
   background-color: blue;
 }
-
 .currentnode {
   background-color: greenyellow;
 }
-
 td.tile.selected {
   background-color: rgba(255, 255, 0, 0.623);
 }
-
 .yellow-brick {
   background-color: yellow !important;
 }
-
 .align-center {
   text-align: center;
 }
-
 td.gutter {
   border: 0;
 }
-
 .d-flex {
   display: flex;
 }
-
 .space-children > * {
   margin-right: 5px;
 }
-
 .box {
   width: 25px;
   height: 25px;

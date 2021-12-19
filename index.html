@@ -1,66 +1,61 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link href="css/app.css" rel="stylesheet">
+		<link href="main1639930955027.css" rel="stylesheet">
 		<link rel="icon" href="favicon.ico">
-		<script id='main' async defer type="module" src="dist/src/main.js"></script>
+		<script id="main" async="" defer="" type="module" src="main1639930955027.js"></script>
 	</head>
 	<body>
-		<div id='grid_container'
-			unselectable="on"
-			onselectstart="return false;" 
-		></div>
+		<div id="grid_container" unselectable="on" onselectstart="return false;"></div>
 
-		<div class='d-flex space-children'>
-			<button id='go'>go</button>
-			<button id='tick'>tick</button>
-			<button id='reset'>reset</button>
+		<div class="d-flex space-children">
+			<button id="go">go</button>
+			<button id="tick">tick</button>
+			<button id="reset">reset</button>
 
-			<select id='speed_select'>
+			<select id="speed_select">
 				<option>slow</option>
-				<option selected>medium</option>
+				<option selected="">medium</option>
 				<option>fast</option>
 			</select>
 
-			<select id='algo_select'>
-				<option selected>Djikstra</option>
+			<select id="algo_select">
+				<option selected="">Djikstra</option>
 				<option>A*</option>
 			</select>
 
 			<div class="d-flex">
-				<input type="checkbox" id="diagonal" />
+				<input type="checkbox" id="diagonal">
 
-				<label for='diagonal'>diagonal</label>
+				<label for="diagonal">diagonal</label>
 			</div>
 		</div>
 
-		<div class='mt-2'>
+		<div class="mt-2">
 			<div class="mt-1">
-				<div class='d-flex'><div class='box align-center'>@</div>start</div>
-				<div class='d-flex'><div class='box align-center'>$</div>finish</div>
-				<div class='d-flex'><div class='box align-center'>#</div>wall (click/drag on tiles to draw)</div>
+				<div class="d-flex"><div class="box align-center">@</div>start</div>
+				<div class="d-flex"><div class="box align-center">$</div>finish</div>
+				<div class="d-flex"><div class="box align-center">#</div>wall (click/drag on tiles to draw)</div>
 			</div>
 
-			<div class='d-flex'>
-				<div class='box queued'></div>
-				<div class='ms-1'>queued up for later visit</div>
+			<div class="d-flex">
+				<div class="box queued"></div>
+				<div class="ms-1">queued up for later visit</div>
 			</div>
 
-			<div class='d-flex mt-1'>
-				<div class='box visited'></div>
+			<div class="d-flex mt-1">
+				<div class="box visited"></div>
 				<div class="ms-1">visited</div>
 			</div>
 
-			<div class='d-flex mt-1'>
-				<div class='box currentnode'></div>
+			<div class="d-flex mt-1">
+				<div class="box currentnode"></div>
 				<div class="ms-1">current node being visited</div>
 			</div>
 
-			<div class='d-flex mt-1'>
-				<div class='box yellow-brick'></div>
+			<div class="d-flex mt-1">
+				<div class="box yellow-brick"></div>
 				<div class="ms-1">yellow brick road</div>
 			</div>
 		</div>
@@ -73,5 +68,5 @@
 				window.main();
 			}
     </script>
-	</body>
-</html>
+	
+</body></html>
