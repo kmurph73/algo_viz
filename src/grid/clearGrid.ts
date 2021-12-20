@@ -15,6 +15,8 @@ export const clearGrid = ({ keepWalls }: { keepWalls: boolean }): void => {
         continue;
       }
 
+      tile.cost = null;
+
       tile.td.classList.remove(
         "visited",
         "queued",

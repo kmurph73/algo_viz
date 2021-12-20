@@ -13,7 +13,7 @@ export type Tile = {
   point: Point;
   td: HTMLElement;
   type: TileType;
-  weight: number | null;
+  cost: number | null;
 };
 
 export const tileTexts = {

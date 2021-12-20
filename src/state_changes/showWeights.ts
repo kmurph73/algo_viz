@@ -11,9 +11,9 @@ export const changeShowWeights = (e: Event) => {
     for (let index = 0; index <= NumColumns; index++) {
       const tile = row[index]!;
 
-      if (state.showCost && tile.weight) {
-        tile.td.innerText = tile.weight.toString();
-      } else if (!state.showCost && tile.weight) {
+      if (state.showCost && tile.cost) {
+        tile.td.innerText = tile.cost.toString();
+      } else if (!state.showCost && tile.cost) {
         tile.td.innerText = "";
       }
     }

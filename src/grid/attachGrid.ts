@@ -32,7 +32,7 @@ export const attachGrid = (): void => {
         td,
         point: { x, y },
         type,
-        weight: null,
+        cost: null,
       };
 
       tiles.push(tile);

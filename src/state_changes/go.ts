@@ -50,7 +50,7 @@ export const startLooping = (
     const tile = grid.atPoint(next.point)!;
 
     if (next.weight) {
-      tile.weight = next.weight;
+      tile.cost = next.weight;
     }
     handleTick(tile, next);
   }, speed);

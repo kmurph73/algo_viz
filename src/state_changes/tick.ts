@@ -24,7 +24,7 @@ export const clickTick = (): void => {
   const next = algo.next();
   const tile = grid.atPoint(next.point)!;
   if (next.weight) {
-    tile.weight = next.weight;
+    tile.cost = next.weight;
   }
   handleTick(tile, next);
 };
