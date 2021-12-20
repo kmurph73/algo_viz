@@ -590,6 +590,7 @@
         if (tile.type === TileType.Gutter) {
           continue;
         }
+        tile.cost = null;
         tile.td.classList.remove("visited", "queued", "currentnode", "yellow-brick");
         const type = (() => {
           if (pointsEq(tile.point, grid.startPoint)) {
@@ -657,7 +658,7 @@
     const next = algo.next();
     const tile = grid.atPoint(next.point);
     if (next.weight) {
-      tile.weight = next.weight;
+      tile.cost = next.weight;
     }
     handleTick(tile, next);
   };
@@ -725,7 +726,7 @@
       const next = algo.next();
       const tile = grid.atPoint(next.point);
       if (next.weight) {
-        tile.weight = next.weight;
+        tile.cost = next.weight;
       }
       handleTick(tile, next);
     }, speed);
@@ -753,6 +754,7 @@
         if (tile.type === TileType.Gutter) {
           continue;
         }
+        tile.cost = null;
         tile.td.classList.remove("visited", "queued", "currentnode", "yellow-brick");
         const type = (() => {
           if (pointsEq(tile.point, defaultStartPoint)) {
@@ -790,9 +792,9 @@
       const row = grid.tiles[index];
       for (let index2 = 0; index2 <= NumColumns; index2++) {
         const tile = row[index2];
-        if (state.showCost && tile.weight) {
-          tile.td.innerText = tile.weight.toString();
-        } else if (!state.showCost && tile.weight) {
+        if (state.showCost && tile.cost) {
+          tile.td.innerText = tile.cost.toString();
+        } else if (!state.showCost && tile.cost) {
           tile.td.innerText = "";
         }
       }
@@ -985,7 +987,7 @@
           td,
           point: { x, y },
           type,
-          weight: null
+          cost: null
         };
         tiles.push(tile);
       }
