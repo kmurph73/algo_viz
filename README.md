@@ -1,10 +1,10 @@
 https://kmurph73.github.io/algo_viz/
 
-Needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) & [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) for a roguelike I started to make after going through [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/).
+I needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) & [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) for a roguelike I started to make after going through [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/).
 
-Decided to roll my own, since it's more fun that way.
+Decided to roll my own algos, which was great fun.
 
-Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker.
+Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker - will give you some insight into why Djikstra's algorithm is so useful.
 
 #### Dijkstra TL;DR
 
