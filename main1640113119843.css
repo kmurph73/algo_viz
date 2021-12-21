@@ -33,6 +33,9 @@ body {
 .mt-2 {
   margin-top: 0.5rem !important;
 }
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
 .ms-1 {
   margin-left: 0.25rem !important;
 }
