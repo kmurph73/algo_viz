@@ -1,4 +1,4 @@
-https://kmurph73.github.io/algo_viz/
+An algo visualizer: https://kmurph73.github.io/algo_viz/
 
 I needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) & [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) for a roguelike I started to make after going through [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/).
 
