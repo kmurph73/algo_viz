@@ -4,7 +4,7 @@ I needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algor
 
 Decided to roll my own algos, which was great fun.
 
-Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker - will give you some insight into why Djikstra's algorithm is so useful.
+Why Djikstra's?  Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker.
 
 #### Dijkstra TL;DR
 
@@ -24,7 +24,7 @@ The heuristic function is: `g(n) + h(n)`
 
 where `g(n)` is (confusingly) the distance to the start node, and `h(n)` is the distance to the goal node.
 
-We utilize a priority queue to ensure that the lowest cost node is always dequeued.
+We utilize a priority queue to ensure that the lowest cost node is always dequeued first.
 
 If we can only travel up/down/left/right ([Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry)), the function for calculating the distance to the goal node (`h(n)`) is:
 
