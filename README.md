@@ -4,7 +4,7 @@ I needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algor
 
 Decided to roll my own algos, which was great fun.
 
-Why Djikstra's?  Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker.
+Why Djikstra's?  Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker, for starters.
 
 #### Dijkstra TL;DR
 
@@ -36,3 +36,9 @@ export const manhattanDistance = (node1: Point, node2: Point) => {
   return dx + dy;
 };
 ```
+
+#### Inspirations
+
+* Clément Mihailescu's pathfinding visualizer: https://clementmihailescu.github.io/Pathfinding-Visualizer
+* rot.js's Dijkstra & A* implementations: https://github.com/ondras/rot.js/tree/master/lib/path
+* [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/) for starting me down this path!
