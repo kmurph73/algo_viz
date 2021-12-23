@@ -13,9 +13,9 @@ export const getPath = (lastNode: Algo.Node): Point[] => {
   return path.reverse();
 };
 
-export const manhattanDistance = (node1: Point, node2: Point) => {
-  const dx = Math.abs(node1.x - node2.x);
-  const dy = Math.abs(node1.y - node2.y);
+export const manhattanDistance = (p1: Point, p2: Point) => {
+  const dx = Math.abs(p1.x - p2.x);
+  const dy = Math.abs(p1.y - p2.y);
 
   return dx + dy;
 };

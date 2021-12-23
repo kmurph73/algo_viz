@@ -24,7 +24,7 @@ export namespace Algo {
   export type Tick = {
     point: Point;
     type: ActionType;
-    weight: number | null;
+    cost: number | null;
     path?: Point[];
   };
 }

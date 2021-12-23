@@ -49,8 +49,8 @@ export const startLooping = (
     const next = algo.next();
     const tile = grid.atPoint(next.point)!;
 
-    if (next.weight) {
-      tile.cost = next.weight;
+    if (next.cost) {
+      tile.cost = next.cost;
     }
     handleTick(tile, next);
   }, speed);

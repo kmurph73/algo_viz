@@ -5,6 +5,7 @@ import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
 import { state, grid, html, searchIsDone } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
+import { roundToOneDecimal } from "../util/util.js";
 import { handleClear } from "./clear.js";
 
 export const clickTick = (): void => {
@@ -23,8 +24,8 @@ export const clickTick = (): void => {
 
   const next = algo.next();
   const tile = grid.atPoint(next.point)!;
-  if (next.weight) {
-    tile.cost = next.weight;
+  if (next.cost) {
+    tile.cost = next.cost;
   }
   handleTick(tile, next);
 };
@@ -68,8 +69,9 @@ export const handleTick = (tile: Tile, next: Algo.Tick): void => {
 
     state.currentVisitedTile = tile;
   } else {
-    if (state.showCost && next.weight) {
-      tile.td.innerText = next.weight.toString();
+    if (state.showCost && next.cost) {
+      const cost = state.diagonal ? roundToOneDecimal(next.cost) : next.cost;
+      tile.td.innerText = cost.toString();
     }
 
     classList.add("queued");
