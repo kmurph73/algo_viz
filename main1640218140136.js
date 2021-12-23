@@ -126,9 +126,9 @@
     }
     return path.reverse();
   };
-  var manhattanDistance = (node1, node2) => {
-    const dx = Math.abs(node1.x - node2.x);
-    const dy = Math.abs(node1.y - node2.y);
+  var manhattanDistance = (p1, p2) => {
+    const dx = Math.abs(p1.x - p2.x);
+    const dy = Math.abs(p1.y - p2.y);
     return dx + dy;
   };
   var euclideanDistance = (p1, p2) => {
@@ -354,12 +354,12 @@
         this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
         this.currentNeighborsLength = this.currentNeighbors.length;
         this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit, weight: null };
+        return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
       } else {
         return {
           point: this.currentNode.point,
           type: Algo.ActionType.NoMas,
-          weight: null
+          cost: null
         };
       }
     }
@@ -374,7 +374,7 @@
             value: this.currentNode.value + 1
           };
           const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path, weight: node.value };
+          return { point, type: Algo.ActionType.Found, path, cost: node.value };
         }
         const { x, y } = point;
         this.neighborIndex += 1;
@@ -396,7 +396,7 @@
             value: g + h
           };
           this.awaitingVisit.enqueue(`${x},${y}`, node);
-          return { point, type: Algo.ActionType.Enqueued, weight: node.value };
+          return { point, type: Algo.ActionType.Enqueued, cost: node.value };
         }
       }
       return this.visitNext();
@@ -521,12 +521,12 @@
         this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
         this.currentNeighborsLength = this.currentNeighbors.length;
         this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit, weight: null };
+        return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
       } else {
         return {
           point: this.currentNode.point,
           type: Algo.ActionType.NoMas,
-          weight: null
+          cost: null
         };
       }
     }
@@ -541,7 +541,7 @@
             value: this.currentNode.value + 1
           };
           const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path, weight: node.value };
+          return { point, type: Algo.ActionType.Found, path, cost: node.value };
         }
         const { x, y } = point;
         this.neighborIndex += 1;
@@ -557,7 +557,7 @@
             value: this.currentNode.value + 1
           };
           this.awaitingVisit.enqueue(id, node);
-          return { point, type: Algo.ActionType.Enqueued, weight: node.value };
+          return { point, type: Algo.ActionType.Enqueued, cost: node.value };
         }
       }
       return this.visitNext();
@@ -644,6 +644,18 @@
     }
   };
 
+  // dist/src/util/util.js
+  var roundToOneDecimal = (num) => {
+    return Math.round(num * 10) / 10;
+  };
+  var unwrap = (value, errorMessage) => {
+    if (value == null) {
+      throw new Error(errorMessage == null ? "Value should be here!" : errorMessage);
+    } else {
+      return value;
+    }
+  };
+
   // dist/src/state_changes/tick.js
   var clickTick = () => {
     if (searchIsDone()) {
@@ -657,8 +669,8 @@
     const algo = state.currentAlgo;
     const next = algo.next();
     const tile = grid.atPoint(next.point);
-    if (next.weight) {
-      tile.cost = next.weight;
+    if (next.cost) {
+      tile.cost = next.cost;
     }
     handleTick(tile, next);
   };
@@ -692,8 +704,9 @@
       }
       state.currentVisitedTile = tile;
     } else {
-      if (state.showCost && next.weight) {
-        tile.td.innerText = next.weight.toString();
+      if (state.showCost && next.cost) {
+        const cost = state.diagonal ? roundToOneDecimal(next.cost) : next.cost;
+        tile.td.innerText = cost.toString();
       }
       classList.add("queued");
     }
@@ -725,8 +738,8 @@
     const loop = window.setInterval(() => {
       const next = algo.next();
       const tile = grid.atPoint(next.point);
-      if (next.weight) {
-        tile.cost = next.weight;
+      if (next.cost) {
+        tile.cost = next.cost;
       }
       handleTick(tile, next);
     }, speed);
@@ -793,20 +806,12 @@
       for (let index2 = 0; index2 <= NumColumns; index2++) {
         const tile = row[index2];
         if (state.showCost && tile.cost) {
-          tile.td.innerText = tile.cost.toString();
+          const cost = state.diagonal ? roundToOneDecimal(tile.cost) : tile.cost;
+          tile.td.innerText = cost.toString();
         } else if (!state.showCost && tile.cost) {
           tile.td.innerText = "";
         }
       }
-    }
-  };
-
-  // dist/src/util/util.js
-  var unwrap = (value, errorMessage) => {
-    if (value == null) {
-      throw new Error(errorMessage == null ? "Value should be here!" : errorMessage);
-    } else {
-      return value;
     }
   };
 
