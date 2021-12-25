@@ -92,7 +92,7 @@
     speed: null,
     algo: null,
     diagonal: null,
-    showWeights: null
+    showCost: null
   };
   var state = {
     dragging: false,
@@ -242,7 +242,6 @@
       }
       const val = node.value;
       let tail = null;
-      let tailId = null;
       let nextId = this.headId;
       while (nextId) {
         const next = this.getNode(nextId);
@@ -481,8 +480,8 @@
     }
   };
 
-  // dist/src/algos/IterableLazyDijkstra.js
-  var IterableLazyDijkstra = class {
+  // dist/src/algos/IterableDijkstra.js
+  var IterableDijkstra = class {
     visited;
     awaitingVisit;
     start;
@@ -572,7 +571,7 @@
     const start = grid.startPoint;
     const end = grid.endPoint;
     const diagonal = state.diagonal;
-    return new IterableLazyDijkstra({
+    return new IterableDijkstra({
       start,
       end,
       canEnterTile,
@@ -798,7 +797,7 @@
   };
 
   // dist/src/state_changes/showWeights.js
-  var changeShowWeights = (e) => {
+  var changeShowCost = (e) => {
     const checkbox = e.target;
     state.showCost = checkbox.checked;
     for (let index = 0; index <= NumRows; index++) {
@@ -823,7 +822,7 @@
     html.speed = unwrap(document.getElementById("speed_select"));
     html.algo = unwrap(document.getElementById("algo_select"));
     html.diagonal = unwrap(document.getElementById("diagonal"));
-    html.showWeights = unwrap(document.getElementById("show_cost"));
+    html.showCost = unwrap(document.getElementById("show_cost"));
   };
   var attachEvents = () => {
     html.go.addEventListener("click", clickGoButton);
@@ -832,7 +831,7 @@
     html.speed.addEventListener("change", changeSpeed);
     html.algo.addEventListener("change", changeAlgo);
     html.diagonal.addEventListener("change", changeDiagonal);
-    html.showWeights.addEventListener("change", changeShowWeights);
+    html.showCost.addEventListener("change", changeShowCost);
   };
 
   // dist/src/events/mouse.js
