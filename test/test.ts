@@ -1,6 +1,6 @@
 import test from "ava";
 import { Algo } from "../src/algos/algo_types.js";
-import { IterableLazyDijkstra } from "../src/algos/IterableLazyDijkstra.js";
+import { IterableDijkstra } from "../src/algos/IterableDijkstra.js";
 import { getManhattanNeighbors } from "../src/app_util/app_util.js";
 
 test("short path", (t) => {
@@ -21,7 +21,7 @@ test("short path", (t) => {
     return r[x] != null;
   };
 
-  const algo = new IterableLazyDijkstra({
+  const algo = new IterableDijkstra({
     start,
     end,
     canEnterTile,
@@ -96,7 +96,7 @@ test("no path", (t) => {
     return false;
   };
 
-  const algo = new IterableLazyDijkstra({
+  const algo = new IterableDijkstra({
     start,
     end,
     canEnterTile,

@@ -17,7 +17,7 @@ export type UserInput = {
   speed: HTMLSelectElement | null;
   algo: HTMLSelectElement | null;
   diagonal: HTMLSelectElement | null;
-  showWeights: HTMLSelectElement | null;
+  showCost: HTMLSelectElement | null;
 };
 
 export const html: UserInput = {
@@ -27,7 +27,7 @@ export const html: UserInput = {
   speed: null,
   algo: null,
   diagonal: null,
-  showWeights: null,
+  showCost: null,
 };
 
 export const state: State = {

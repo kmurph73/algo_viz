@@ -1,7 +1,7 @@
 import { grid, NumColumns, NumRows, state } from "../constants.js";
 import { roundToOneDecimal } from "../util/util.js";
 
-export const changeShowWeights = (e: Event) => {
+export const changeShowCost = (e: Event) => {
   const checkbox = e.target as HTMLInputElement;
 
   state.showCost = checkbox.checked;

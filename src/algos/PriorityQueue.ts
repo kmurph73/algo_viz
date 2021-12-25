@@ -28,7 +28,6 @@ export class PriorityQueue<T extends { value: number }> {
     const val = node.value;
 
     let tail: QueueNode<T> | null = null;
-    let tailId = null;
     let nextId: string | null = this.headId;
 
     while (nextId) {

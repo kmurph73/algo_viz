@@ -1,6 +1,6 @@
 import { Algo } from "../algos/algo_types.js";
 import { IterableAStar } from "../algos/IterableAStar.js";
-import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
+import { IterableDijkstra } from "../algos/IterableDijkstra.js";
 import { disable, enable, setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
 import { initDijkstra } from "../app_util/initDjikstra.js";
@@ -38,9 +38,7 @@ export const clickGoButton = () => {
   }
 };
 
-export const startLooping = (
-  algo: IterableLazyDijkstra | IterableAStar
-): void => {
+export const startLooping = (algo: IterableDijkstra | IterableAStar): void => {
   const speed = getSpeed();
 
   disable(["tick", "reset", "algo", "diagonal"]);

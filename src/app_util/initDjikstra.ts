@@ -1,4 +1,4 @@
-import { IterableLazyDijkstra } from "../algos/IterableLazyDijkstra.js";
+import { IterableDijkstra } from "../algos/IterableDijkstra.js";
 import { grid, state } from "../constants.js";
 import {
   canEnterTile,
@@ -6,12 +6,12 @@ import {
   getManhattanNeighbors,
 } from "./app_util.js";
 
-export const initDijkstra = (): IterableLazyDijkstra => {
+export const initDijkstra = (): IterableDijkstra => {
   const start = grid.startPoint;
   const end = grid.endPoint;
   const diagonal = state.diagonal;
 
-  return new IterableLazyDijkstra({
+  return new IterableDijkstra({
     start,
     end,
     canEnterTile,

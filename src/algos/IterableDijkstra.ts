@@ -3,7 +3,7 @@ import { Algo } from "./algo_types.js";
 import { getPath } from "./algo_util.js";
 import { Queue } from "./Queue.js";
 
-export class IterableLazyDijkstra {
+export class IterableDijkstra {
   visited: Record<string, Algo.Node>;
   awaitingVisit: Queue<Algo.Node>;
   start: Point;
@@ -100,7 +100,7 @@ export class IterableLazyDijkstra {
     return this.visitNext();
   }
 
-  isDijkstra(): this is IterableLazyDijkstra {
+  isDijkstra(): this is IterableDijkstra {
     return true;
   }
 }
