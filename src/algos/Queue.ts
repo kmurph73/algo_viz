@@ -50,6 +50,11 @@ export class Queue<T> {
     this.length -= 1;
     this.headId = front.nextId;
 
+    if (this.store.size === 0) {
+      this.headId = null;
+      this.tailId = null;
+    }
+
     return front.thing;
   }
 
