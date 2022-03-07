@@ -454,6 +454,10 @@
       this.store.delete(this.headId);
       this.length -= 1;
       this.headId = front.nextId;
+      if (this.store.size === 0) {
+        this.headId = null;
+        this.tailId = null;
+      }
       return front.thing;
     }
     has(id) {
