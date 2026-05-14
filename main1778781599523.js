@@ -60,24 +60,6 @@
     atPoint({ x, y }) {
       return this.at(x, y);
     }
-    saveToLocalStorage() {
-      const json = {
-        walls: [],
-        start: this.startPoint,
-        end: this.endPoint
-      };
-      for (let index = 0; index <= NumRows; index++) {
-        const row = this.tiles[index];
-        for (let index2 = 0; index2 <= NumColumns; index2++) {
-          const tile = row[index2];
-          if (tile.type === TileType.Empty) {
-            const { x, y } = tile.point;
-            json.walls.push([x, y]);
-          }
-        }
-      }
-      localStorage.setItem("grid", JSON.stringify(json));
-    }
   };
 
   // dist/src/constants.js
@@ -265,6 +247,29 @@
     has(id) {
       return this.store.has(id);
     }
+    getThing(id) {
+      return this.store.get(id)?.thing;
+    }
+    remove(id) {
+      const node = this.store.get(id);
+      if (!node)
+        return;
+      if (this.headId === id) {
+        this.headId = node.nextId;
+      } else {
+        let prevId = this.headId;
+        while (prevId) {
+          const prevNode = this.getNode(prevId);
+          if (prevNode.nextId === id) {
+            prevNode.nextId = node.nextId;
+            break;
+          }
+          prevId = prevNode.nextId;
+        }
+      }
+      this.store.delete(id);
+      this.length -= 1;
+    }
     dequeue() {
       if (!this.headId) {
         return null;
@@ -349,56 +354,58 @@
       const { x, y } = this.currentNode.point;
       this.visited[`${x},${y}`] = this.currentNode;
       const nextNode = this.awaitingVisit.dequeue();
-      if (nextNode) {
-        const nextPoint = nextNode.point;
-        this.currentNode = nextNode;
-        this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
-        this.currentNeighborsLength = this.currentNeighbors.length;
-        this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
-      } else {
+      if (!nextNode) {
         return {
           point: this.currentNode.point,
           type: Algo.ActionType.NoMas,
           cost: null
         };
       }
+      if (pointsEq(nextNode.point, this.end)) {
+        return {
+          point: nextNode.point,
+          type: Algo.ActionType.Found,
+          path: getPath(nextNode),
+          cost: nextNode.g
+        };
+      }
+      const nextPoint = nextNode.point;
+      this.currentNode = nextNode;
+      this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
+      this.currentNeighborsLength = this.currentNeighbors.length;
+      this.neighborIndex = 0;
+      return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
+    }
+    stepCost(from, to) {
+      return from.x !== to.x && from.y !== to.y ? Math.SQRT2 : 1;
     }
     next() {
       this.totalTicks += 1;
       while (this.neighborIndex < this.currentNeighborsLength) {
         const point = this.currentNeighbors[this.neighborIndex];
-        if (pointsEq(point, this.end)) {
-          const node = {
-            point,
-            prev: this.currentNode,
-            value: this.currentNode.value + 1
-          };
-          const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path, cost: node.value };
-        }
+        const prev = this.currentNode;
+        const stepCost = this.stepCost(prev.point, point);
         const { x, y } = point;
         this.neighborIndex += 1;
         const id = `${x},${y}`;
-        const visited = this.visited[id] != null;
-        const queued = this.awaitingVisit.has(id);
-        if (visited || queued) {
+        if (this.visited[id] != null) {
           continue;
         }
-        if (this.canEnterTile(x, y)) {
-          const prev = this.currentNode;
-          const g = prev.g + 1;
-          const h = this.heuristic(point, this.end);
-          const node = {
-            point,
-            prev: this.currentNode,
-            g,
-            h,
-            value: g + h
-          };
-          this.awaitingVisit.enqueue(`${x},${y}`, node);
-          return { point, type: Algo.ActionType.Enqueued, cost: node.value };
+        if (!pointsEq(point, this.end) && !this.canEnterTile(x, y)) {
+          continue;
         }
+        const g = prev.g + stepCost;
+        const existing = this.awaitingVisit.getThing(id);
+        if (existing && existing.g <= g) {
+          continue;
+        }
+        if (existing) {
+          this.awaitingVisit.remove(id);
+        }
+        const h = this.heuristic(point, this.end);
+        const node = { point, prev, g, h, value: g + h };
+        this.awaitingVisit.enqueue(id, node);
+        return { point, type: Algo.ActionType.Enqueued, cost: node.value };
       }
       return this.visitNext();
     }
@@ -421,71 +428,6 @@
     });
   };
 
-  // dist/src/algos/Queue.js
-  var Queue = class {
-    store;
-    headId;
-    tailId;
-    length;
-    constructor() {
-      this.store = /* @__PURE__ */ new Map();
-      this.headId = null;
-      this.tailId = null;
-      this.length = 0;
-    }
-    enqueue(id, node) {
-      const tail = this.tailId ? this.getNode(this.tailId) : null;
-      if (tail) {
-        tail.nextId = id;
-      }
-      this.store.set(id, { thing: node, nextId: null });
-      this.tailId = id;
-      if (!this.headId) {
-        this.headId = id;
-      }
-      this.length += 1;
-    }
-    dequeue() {
-      if (!this.headId) {
-        return null;
-      }
-      const front = this.store.get(this.headId);
-      if (!front) {
-        throw new Error("Front should be here...");
-      }
-      this.store.delete(this.headId);
-      this.length -= 1;
-      this.headId = front.nextId;
-      if (this.store.size === 0) {
-        this.headId = null;
-        this.tailId = null;
-      }
-      return front.thing;
-    }
-    has(id) {
-      return this.store.has(id);
-    }
-    getNode(id) {
-      const node = this.store.get(id);
-      if (!node) {
-        throw new Error(`node should be here for id ${id}`);
-      }
-      return node;
-    }
-    toArr() {
-      if (!this.headId) {
-        return [];
-      }
-      let node = this.getNode(this.headId);
-      const arr = [node.thing];
-      while (node.nextId) {
-        node = this.getNode(node.nextId);
-        arr.push(node.thing);
-      }
-      return arr;
-    }
-  };
-
   // dist/src/algos/IterableDijkstra.js
   var IterableDijkstra = class {
     visited;
@@ -501,7 +443,7 @@
     currentNeighborsLength;
     constructor({ start, end, canEnterTile: canEnterTile2, getNeighbors: getNeighbors2 }) {
       this.visited = {};
-      this.awaitingVisit = new Queue();
+      this.awaitingVisit = new PriorityQueue();
       this.start = start;
       this.end = end;
       this.totalTicks = 0;
@@ -516,54 +458,61 @@
       this.canEnterTile = canEnterTile2;
       this.getNeighbors = getNeighbors2;
     }
+    stepCost(from, to) {
+      return from.x !== to.x && from.y !== to.y ? Math.SQRT2 : 1;
+    }
     visitNext() {
       const { x, y } = this.currentNode.point;
       this.visited[`${x},${y}`] = this.currentNode;
       const nextNode = this.awaitingVisit.dequeue();
-      if (nextNode) {
-        const nextPoint = nextNode.point;
-        this.currentNode = nextNode;
-        this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
-        this.currentNeighborsLength = this.currentNeighbors.length;
-        this.neighborIndex = 0;
-        return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
-      } else {
+      if (!nextNode) {
         return {
           point: this.currentNode.point,
           type: Algo.ActionType.NoMas,
           cost: null
         };
       }
+      if (pointsEq(nextNode.point, this.end)) {
+        return {
+          point: nextNode.point,
+          type: Algo.ActionType.Found,
+          path: getPath(nextNode),
+          cost: nextNode.value
+        };
+      }
+      const nextPoint = nextNode.point;
+      this.currentNode = nextNode;
+      this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
+      this.currentNeighborsLength = this.currentNeighbors.length;
+      this.neighborIndex = 0;
+      return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
     }
     next() {
       this.totalTicks += 1;
       while (this.neighborIndex < this.currentNeighborsLength) {
         const point = this.currentNeighbors[this.neighborIndex];
-        if (pointsEq(point, this.end)) {
-          const node = {
-            point,
-            prev: this.currentNode,
-            value: this.currentNode.value + 1
-          };
-          const path = getPath(node);
-          return { point, type: Algo.ActionType.Found, path, cost: node.value };
-        }
+        const prev = this.currentNode;
+        const stepCost = this.stepCost(prev.point, point);
         const { x, y } = point;
         this.neighborIndex += 1;
         const id = `${x},${y}`;
-        const visited = this.visited[id];
-        if (visited || this.awaitingVisit.has(id)) {
+        if (this.visited[id] != null) {
           continue;
         }
-        if (this.canEnterTile(x, y)) {
-          const node = {
-            point,
-            prev: this.currentNode,
-            value: this.currentNode.value + 1
-          };
-          this.awaitingVisit.enqueue(id, node);
-          return { point, type: Algo.ActionType.Enqueued, cost: node.value };
+        if (!pointsEq(point, this.end) && !this.canEnterTile(x, y)) {
+          continue;
         }
+        const value = prev.value + stepCost;
+        const existing = this.awaitingVisit.getThing(id);
+        if (existing && existing.value <= value) {
+          continue;
+        }
+        if (existing) {
+          this.awaitingVisit.remove(id);
+        }
+        const node = { point, prev, value };
+        this.awaitingVisit.enqueue(id, node);
+        return { point, type: Algo.ActionType.Enqueued, cost: value };
       }
       return this.visitNext();
     }
@@ -670,6 +619,7 @@
     }
     if (!state.currentAlgo) {
       state.currentAlgo = state.algo === "A*" ? initAStar() : initDijkstra();
+      disable(["algo", "diagonal"]);
     }
     const algo = state.currentAlgo;
     const next = algo.next();
@@ -798,8 +748,8 @@
       clearInterval(state.currentLoop);
       state.currentLoop = void 0;
     }
+    enable(["algo", "diagonal", "tick", "go", "reset"]);
     html.go.innerText = "go";
-    html.go.disabled = false;
   };
 
   // dist/src/state_changes/showWeights.js
@@ -960,7 +910,7 @@
           break;
       }
     } else {
-      state.currentType === TileType.Wall;
+      state.currentType = TileType.Wall;
     }
     if (didDragNode) {
       const dropped = state.currentType === TileType.Start ? grid.startTile() : state.currentType === TileType.End ? grid.endTile() : null;
@@ -1045,17 +995,11 @@
     document.getElementById("grid_container").innerHTML = html2;
   };
   var drawGutterNumbers = () => {
+    for (let x = 0; x <= NumColumns; x++) {
+      grid.at(x, 0).td.innerText = x.toString();
+    }
     for (let y = 0; y <= NumRows; y++) {
-      for (let x = 0; x <= NumColumns; x++) {
-        if (y === 0) {
-          const div = grid.at(x, y).td;
-          div.innerText = x.toString();
-        }
-        if (x === 0) {
-          const tile = grid.at(x, y);
-          tile.td.innerText = y.toString();
-        }
-      }
+      grid.at(0, y).td.innerText = y.toString();
     }
   };
   var drawNodes = () => {
