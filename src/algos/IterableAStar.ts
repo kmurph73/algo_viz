@@ -58,21 +58,30 @@ export class IterableAStar {
     this.visited[`${x},${y}`] = this.currentNode;
 
     const nextNode = this.awaitingVisit.dequeue();
-    if (nextNode) {
-      const nextPoint = nextNode.point;
-      this.currentNode = nextNode;
-      this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
-      this.currentNeighborsLength = this.currentNeighbors.length;
-      this.neighborIndex = 0;
-
-      return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
-    } else {
+    if (!nextNode) {
       return {
         point: this.currentNode.point,
         type: Algo.ActionType.NoMas,
         cost: null,
       };
     }
+
+    if (pointsEq(nextNode.point, this.end)) {
+      return {
+        point: nextNode.point,
+        type: Algo.ActionType.Found,
+        path: getPath(nextNode),
+        cost: nextNode.g,
+      };
+    }
+
+    const nextPoint = nextNode.point;
+    this.currentNode = nextNode;
+    this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
+    this.currentNeighborsLength = this.currentNeighbors.length;
+    this.neighborIndex = 0;
+
+    return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
   }
 
   private stepCost(from: Point, to: Point): number {
@@ -86,14 +95,6 @@ export class IterableAStar {
       const prev = this.currentNode;
       const stepCost = this.stepCost(prev.point, point);
 
-      if (pointsEq(point, this.end)) {
-        const g = prev.g + stepCost;
-        const node: Node = { point, prev, g, h: 0, value: g };
-        const path = getPath(node);
-
-        return { point, type: Algo.ActionType.Found, path, cost: g };
-      }
-
       const { x, y } = point;
       this.neighborIndex += 1;
 
@@ -102,7 +103,7 @@ export class IterableAStar {
         continue;
       }
 
-      if (!this.canEnterTile(x, y)) {
+      if (!pointsEq(point, this.end) && !this.canEnterTile(x, y)) {
         continue;
       }
 

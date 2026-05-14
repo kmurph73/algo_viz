@@ -16,8 +16,8 @@ export type UserInput = {
   reset: HTMLButtonElement | null;
   speed: HTMLSelectElement | null;
   algo: HTMLSelectElement | null;
-  diagonal: HTMLSelectElement | null;
-  showCost: HTMLSelectElement | null;
+  diagonal: HTMLInputElement | null;
+  showCost: HTMLInputElement | null;
 };
 
 export const html: UserInput = {

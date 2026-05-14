@@ -144,7 +144,7 @@ export const mouseup = (event: Event) => {
         break;
     }
   } else {
-    state.currentType === TileType.Wall;
+    state.currentType = TileType.Wall;
   }
 
   if (didDragNode) {
