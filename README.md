@@ -37,6 +37,30 @@ export const manhattanDistance = (node1: Point, node2: Point) => {
 };
 ```
 
+If diagonal movement is allowed, `h(n)` is the octile distance — the exact cost of an unobstructed path that takes as many diagonal steps (cost `√2`) as possible before finishing with orthogonal steps (cost `1`):
+
+```TypeScript
+const SQRT2_MINUS_1 = Math.SQRT2 - 1;
+
+export const octileDistance = (p1: Point, p2: Point) => {
+  const dx = Math.abs(p1.x - p2.x);
+  const dy = Math.abs(p1.y - p2.y);
+
+  return Math.max(dx, dy) + SQRT2_MINUS_1 * Math.min(dx, dy);
+};
+```
+
+Why this formula? The cheapest *unobstructed* path takes `min(dx, dy)` diagonal steps to line up one axis, then `|dx − dy|` orthogonal steps to finish:
+
+```
+min(dx,dy)·√2 + (max(dx,dy) − min(dx,dy))·1
+= max(dx,dy) + (√2 − 1)·min(dx,dy)
+```
+
+Since obstacles can only make the real path longer, `h(n)` never overestimates — so it's admissible (A\* finds optimal paths) and consistent (no re-opening of closed nodes). It's also the *tightest* admissible heuristic for these step costs, so A\* expands the fewest nodes possible while staying optimal.
+
+The pairing matters: using Manhattan with diagonals enabled would overestimate (it counts `dx + dy` when you can cut the corner), breaking admissibility. Euclidean would stay admissible but loosely underestimate, making A\* expand more nodes than necessary.
+
 #### Inspirations
 
 * Clément Mihailescu's pathfinding visualizer: https://clementmihailescu.github.io/Pathfinding-Visualizer
