@@ -1,3 +1,4 @@
+"use strict";
 (() => {
   // dist/src/algos/algo_types.js
   var Algo;
@@ -99,7 +100,7 @@
     currentType: TileType.Wall,
     diagonal: false,
     speed: "medium",
-    algo: "Djikstra",
+    algo: "Dijkstra",
     showCost: false
   };
   var searchIsDone = () => {
@@ -131,10 +132,11 @@
     const dy = Math.abs(p1.y - p2.y);
     return dx + dy;
   };
-  var euclideanDistance = (p1, p2) => {
-    let y = p2.x - p1.x;
-    let x = p2.y - p1.y;
-    return Math.sqrt(x * x + y * y);
+  var SQRT2_MINUS_1 = Math.SQRT2 - 1;
+  var octileDistance = (p1, p2) => {
+    const dx = Math.abs(p1.x - p2.x);
+    const dy = Math.abs(p1.y - p2.y);
+    return Math.max(dx, dy) + SQRT2_MINUS_1 * Math.min(dx, dy);
   };
 
   // dist/src/structs/point.js
@@ -204,7 +206,7 @@
     if (state.currentAlgo) {
       state.currentAlgo.getNeighbors = state.diagonal ? getDiagonalNeighbors : getManhattanNeighbors;
       if (!state.currentAlgo.isDijkstra()) {
-        state.currentAlgo.heuristic = state.diagonal ? euclideanDistance : manhattanDistance;
+        state.currentAlgo.heuristic = state.diagonal ? octileDistance : manhattanDistance;
       }
     }
   };
@@ -415,7 +417,7 @@
       end,
       canEnterTile,
       getNeighbors: diagonal ? getDiagonalNeighbors : getManhattanNeighbors,
-      heuristic: diagonal ? euclideanDistance : manhattanDistance
+      heuristic: diagonal ? octileDistance : manhattanDistance
     });
   };
 
@@ -570,7 +572,7 @@
     }
   };
 
-  // dist/src/app_util/initDjikstra.js
+  // dist/src/app_util/initDijkstra.js
   var initDijkstra = () => {
     const start = grid.startPoint;
     const end = grid.endPoint;
@@ -855,6 +857,7 @@
       return tile;
     }
   };
+  var didDragNode = false;
   var moveNode = (origin, dest) => {
     const char = origin.type === TileType.Start ? "@" : "$";
     state.currentType = null;
@@ -890,6 +893,8 @@
             return;
           }
           state.currentType = TileType.Start;
+          state.dragging = true;
+          didDragNode = false;
           tile.td.classList.add("selected");
           break;
         case TileType.Empty:
@@ -924,6 +929,8 @@
             tile.td.classList.remove("selected");
           }
           state.currentType = TileType.End;
+          state.dragging = true;
+          didDragNode = false;
           tile.td.classList.add("selected");
           break;
         default:
@@ -955,20 +962,35 @@
     } else {
       state.currentType === TileType.Wall;
     }
+    if (didDragNode) {
+      const dropped = state.currentType === TileType.Start ? grid.startTile() : state.currentType === TileType.End ? grid.endTile() : null;
+      dropped?.td.classList.remove("selected");
+      state.currentType = null;
+      didDragNode = false;
+    }
   };
   var dragTypes = [TileType.Wall, TileType.Empty];
   var mousemove = (event) => {
-    if (!state.currentType) {
+    const currentType = state.currentType;
+    if (!currentType) {
       return;
     }
     if (state.dragging) {
       const tile = findValidClickedOnTile(event);
       if (tile) {
         const type = tile.type;
-        if (tile && dragTypes.includes(type)) {
+        if (currentType === TileType.Start || currentType === TileType.End) {
+          const origin = currentType === TileType.Start ? grid.startTile() : grid.endTile();
+          if (origin && origin !== tile && dragTypes.includes(type)) {
+            moveNode(origin, tile);
+            state.currentType = currentType;
+            didDragNode = true;
+            tile.td.classList.add("selected");
+          }
+        } else if (dragTypes.includes(type)) {
           const div = tile.td;
-          div.innerText = tileTexts[state.currentType];
-          tile.type = state.currentType;
+          div.innerText = tileTexts[currentType];
+          tile.type = currentType;
         }
       }
     }
@@ -1057,6 +1079,6 @@
     document.body.addEventListener("mouseup", mouseup);
     document.body.addEventListener("mousemove", mousemove);
   };
-  window.main = main;
   window.App = { state, grid };
+  main();
 })();
