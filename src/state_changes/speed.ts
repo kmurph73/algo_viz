@@ -1,5 +1,5 @@
 import { state } from "../constants.js";
-import { Speed } from "../types";
+import { Speed } from "../types.js";
 import { startLooping } from "./go.js";
 
 export const changeSpeed = (e: Event) => {

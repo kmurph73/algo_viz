@@ -24,9 +24,18 @@ export const diagonalDistance = (p1: Point, p2: Point) => {
   return Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
 };
 
-export const euclideanDistance = (p1: Point, p2: Point) => {
-  let y = p2.x - p1.x;
-  let x = p2.y - p1.y;
+const SQRT2_MINUS_1 = Math.SQRT2 - 1;
 
-  return Math.sqrt(x * x + y * y);
+export const octileDistance = (p1: Point, p2: Point) => {
+  const dx = Math.abs(p1.x - p2.x);
+  const dy = Math.abs(p1.y - p2.y);
+
+  return Math.max(dx, dy) + SQRT2_MINUS_1 * Math.min(dx, dy);
+};
+
+export const euclideanDistance = (p1: Point, p2: Point) => {
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+
+  return Math.sqrt(dx * dx + dy * dy);
 };

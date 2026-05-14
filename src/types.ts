@@ -1,7 +1,7 @@
-import { Algo } from "./algos/algo_types";
-import { IterableAStar } from "./algos/IterableAStar";
-import { IterableDijkstra } from "./algos/IterableDijkstra";
-import { Grid, Tile, TileType } from "./grid/Grid";
+import { Algo } from "./algos/algo_types.js";
+import { IterableAStar } from "./algos/IterableAStar.js";
+import { IterableDijkstra } from "./algos/IterableDijkstra.js";
+import { Grid, Tile, TileType } from "./grid/Grid.js";
 
 declare global {
   interface Window {
@@ -29,4 +29,4 @@ export type State = {
 
 export type Speed = "slow" | "medium" | "fast";
 
-export type AlgoType = "Djikstra" | "A*";
+export type AlgoType = "Dijkstra" | "A*";

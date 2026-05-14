@@ -26,6 +26,8 @@ export const findValidClickedOnTile = (
   }
 };
 
+let didDragNode = false;
+
 const moveNode = (origin: Tile, dest: Tile): void => {
   const char = origin.type === TileType.Start ? "@" : "$";
 
@@ -70,6 +72,8 @@ export const mousedown = (event: Event) => {
         }
 
         state.currentType = TileType.Start;
+        state.dragging = true;
+        didDragNode = false;
         tile.td.classList.add("selected");
         break;
       case TileType.Empty:
@@ -105,6 +109,8 @@ export const mousedown = (event: Event) => {
         }
 
         state.currentType = TileType.End;
+        state.dragging = true;
+        didDragNode = false;
         tile.td.classList.add("selected");
         break;
       default:
@@ -140,12 +146,25 @@ export const mouseup = (event: Event) => {
   } else {
     state.currentType === TileType.Wall;
   }
+
+  if (didDragNode) {
+    const dropped =
+      state.currentType === TileType.Start
+        ? grid.startTile()
+        : state.currentType === TileType.End
+        ? grid.endTile()
+        : null;
+    dropped?.td.classList.remove("selected");
+    state.currentType = null;
+    didDragNode = false;
+  }
 };
 
 const dragTypes = [TileType.Wall, TileType.Empty];
 
 export const mousemove = (event: Event) => {
-  if (!state.currentType) {
+  const currentType = state.currentType;
+  if (!currentType) {
     return;
   }
 
@@ -155,11 +174,20 @@ export const mousemove = (event: Event) => {
     if (tile) {
       const type = tile.type;
 
-      if (tile && dragTypes.includes(type)) {
+      if (currentType === TileType.Start || currentType === TileType.End) {
+        const origin =
+          currentType === TileType.Start ? grid.startTile() : grid.endTile();
+        if (origin && origin !== tile && dragTypes.includes(type)) {
+          moveNode(origin, tile);
+          state.currentType = currentType;
+          didDragNode = true;
+          tile.td.classList.add("selected");
+        }
+      } else if (dragTypes.includes(type)) {
         const div = tile.td;
 
-        div.innerText = tileTexts[state.currentType];
-        tile.type = state.currentType;
+        div.innerText = tileTexts[currentType];
+        tile.type = currentType;
       }
     }
   }

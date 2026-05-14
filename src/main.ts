@@ -18,5 +18,6 @@ const main = () => {
   // document.body.addEventListener("click", onclicky);
 };
 
-window.main = main;
 window.App = { state, grid };
+
+main();

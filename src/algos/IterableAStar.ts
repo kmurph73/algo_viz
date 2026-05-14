@@ -75,49 +75,52 @@ export class IterableAStar {
     }
   }
 
+  private stepCost(from: Point, to: Point): number {
+    return from.x !== to.x && from.y !== to.y ? Math.SQRT2 : 1;
+  }
+
   next(): Algo.Tick {
     this.totalTicks += 1;
     while (this.neighborIndex < this.currentNeighborsLength) {
       const point = this.currentNeighbors[this.neighborIndex]!;
+      const prev = this.currentNode;
+      const stepCost = this.stepCost(prev.point, point);
 
       if (pointsEq(point, this.end)) {
-        const node: Algo.Node = {
-          point,
-          prev: this.currentNode,
-          value: this.currentNode.value + 1,
-        };
-
+        const g = prev.g + stepCost;
+        const node: Node = { point, prev, g, h: 0, value: g };
         const path = getPath(node);
 
-        return { point, type: Algo.ActionType.Found, path, cost: node.value };
+        return { point, type: Algo.ActionType.Found, path, cost: g };
       }
 
       const { x, y } = point;
       this.neighborIndex += 1;
 
       const id = `${x},${y}`;
-      const visited = this.visited[id] != null;
-      const queued = this.awaitingVisit.has(id);
-      if (visited || queued) {
+      if (this.visited[id] != null) {
         continue;
       }
 
-      if (this.canEnterTile(x, y)) {
-        const prev = this.currentNode;
-        const g = prev.g + 1;
-        const h = this.heuristic(point, this.end);
-        const node: Node = {
-          point,
-          prev: this.currentNode,
-          g,
-          h,
-          value: g + h,
-        };
-
-        this.awaitingVisit.enqueue(`${x},${y}`, node);
-
-        return { point, type: Algo.ActionType.Enqueued, cost: node.value };
+      if (!this.canEnterTile(x, y)) {
+        continue;
       }
+
+      const g = prev.g + stepCost;
+      const existing = this.awaitingVisit.getThing(id);
+      if (existing && existing.g <= g) {
+        continue;
+      }
+      if (existing) {
+        this.awaitingVisit.remove(id);
+      }
+
+      const h = this.heuristic(point, this.end);
+      const node: Node = { point, prev, g, h, value: g + h };
+
+      this.awaitingVisit.enqueue(id, node);
+
+      return { point, type: Algo.ActionType.Enqueued, cost: node.value };
     }
 
     return this.visitNext();

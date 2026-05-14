@@ -1,5 +1,5 @@
 import { state } from "../constants.js";
-import { AlgoType } from "../types";
+import { AlgoType } from "../types.js";
 
 export const changeAlgo = (e: Event) => {
   const select = e.target as HTMLSelectElement;

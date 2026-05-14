@@ -1,32 +1,32 @@
 An algo visualizer: https://kmurph73.github.io/algo_viz/
 
-I needed [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) & [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) for a roguelike I started to make after going through [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/).
+I needed [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) & [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) for a roguelike I started to make after going through [Hands-on Rust](https://pragprog.com/titles/hwrust/hands-on-rust/).
 
 Decided to roll my own algos, which was great fun.
 
-Why Djikstra's?  Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker, for starters.
+Why Dijkstra's?  Checkout [The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php/The_Incredible_Power_of_Dijkstra_Maps) by [Brogue](<https://en.wikipedia.org/wiki/Brogue_(video_game)>)'s creator Brian Walker, for starters.
 
 #### Dijkstra TL;DR
 
-Unweighted, lazy version.
+Lazy version. Edges are weighted: orthogonal steps cost `1`, diagonal steps cost `√2`.
 
 1. "Visit" the starting node.
 
-2. Queue up the node's (passable) neighbors for later visit - storing the current node as `previous` for each.
+2. For each passable neighbor, enqueue it in a priority queue keyed on cumulative cost from the start - storing the current node as `previous`. If the neighbor is already queued with a higher cost, replace it.
 
-3. Dequeue a node, then "visit" it. Go back to step 2 until you find the goal node, then retrace your steps via `previous` until you get to your start node. That's your path to the goal.
+3. Dequeue the lowest-cost node, then "visit" it. Go back to step 2 until you find the goal node, then retrace your steps via `previous` until you get to your start node. That's your path to the goal.
 
 #### A\* TL;DR
 
-[A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) is just a slightly tweaked Dijkstra. It utilizes a heuristic function to assign a "cost" to the current node's neighbors.
+[A\*](https://en.wikipedia.org/wiki/A*_search_algorithm) is just a slightly tweaked Dijkstra. It uses a heuristic to bias the search toward the goal.
 
-The heuristic function is: `g(n) + h(n)`
+The cost function is: `f(n) = g(n) + h(n)`
 
-where `g(n)` is (confusingly) the distance to the start node, and `h(n)` is the distance to the goal node.
+where `g(n)` is the distance from the start node (same as Dijkstra), and `h(n)` is the heuristic estimate of the distance to the goal node.
 
-We utilize a priority queue to ensure that the lowest cost node is always dequeued first.
+We utilize a priority queue (keyed on `f(n)`) to ensure that the lowest cost node is always dequeued first.
 
-If we can only travel up/down/left/right ([Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry)), the function for calculating the distance to the goal node (`h(n)`) is:
+If we can only travel up/down/left/right, `h(n)` is the [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry):
 
 ```TypeScript
 export const manhattanDistance = (node1: Point, node2: Point) => {

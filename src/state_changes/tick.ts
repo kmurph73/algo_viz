@@ -2,7 +2,7 @@ import { Algo } from "../algos/algo_types.js";
 import { walkToDest } from "../app_util/app_util.js";
 import { enable } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
-import { initDijkstra } from "../app_util/initDjikstra.js";
+import { initDijkstra } from "../app_util/initDijkstra.js";
 import { state, grid, html, searchIsDone } from "../constants.js";
 import { Tile } from "../grid/Grid.js";
 import { roundToOneDecimal } from "../util/util.js";
