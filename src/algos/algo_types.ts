@@ -1,4 +1,4 @@
-import { Point } from "../structs/point";
+import { Point } from "../structs/point.js";
 
 export namespace Algo {
   export type Node = {

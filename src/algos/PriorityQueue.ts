@@ -56,6 +56,32 @@ export class PriorityQueue<T extends { value: number }> {
     return this.store.has(id);
   }
 
+  getThing(id: string): T | undefined {
+    return this.store.get(id)?.thing;
+  }
+
+  remove(id: string): void {
+    const node = this.store.get(id);
+    if (!node) return;
+
+    if (this.headId === id) {
+      this.headId = node.nextId;
+    } else {
+      let prevId = this.headId;
+      while (prevId) {
+        const prevNode = this.getNode(prevId);
+        if (prevNode.nextId === id) {
+          prevNode.nextId = node.nextId;
+          break;
+        }
+        prevId = prevNode.nextId;
+      }
+    }
+
+    this.store.delete(id);
+    this.length -= 1;
+  }
+
   dequeue(): T | null {
     if (!this.headId) {
       return null;

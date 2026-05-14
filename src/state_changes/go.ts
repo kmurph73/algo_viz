@@ -3,7 +3,7 @@ import { IterableAStar } from "../algos/IterableAStar.js";
 import { IterableDijkstra } from "../algos/IterableDijkstra.js";
 import { disable, enable, setDisabled } from "../app_util/html_util.js";
 import { initAStar } from "../app_util/initAStar.js";
-import { initDijkstra } from "../app_util/initDjikstra.js";
+import { initDijkstra } from "../app_util/initDijkstra.js";
 import { html, grid, state } from "../constants.js";
 import { handleClear } from "./clear.js";
 import { getSpeed } from "./speed.js";

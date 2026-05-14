@@ -1,4 +1,3 @@
-import { NumColumns, NumRows } from "../constants.js";
 import { Point } from "../structs/point.js";
 
 export enum TileType {
@@ -23,8 +22,6 @@ export const tileTexts = {
   [TileType.End]: "$",
   [TileType.Gutter]: "nada",
 };
-
-type localJSON = { walls: Array<[number, number]>; start: Point; end: Point };
 
 export class Grid {
   tiles: Tile[][];
@@ -67,28 +64,5 @@ export class Grid {
 
   atPoint({ x, y }: Point): Tile | null {
     return this.at(x, y);
-  }
-
-  saveToLocalStorage(): void {
-    const json: localJSON = {
-      walls: [],
-      start: this.startPoint,
-      end: this.endPoint,
-    };
-
-    for (let index = 0; index <= NumRows; index++) {
-      const row = this.tiles[index]!;
-
-      for (let index = 0; index <= NumColumns; index++) {
-        const tile = row[index]!;
-
-        if (tile.type === TileType.Empty) {
-          const { x, y } = tile.point;
-          json.walls.push([x, y]);
-        }
-      }
-    }
-
-    localStorage.setItem("grid", JSON.stringify(json));
   }
 }

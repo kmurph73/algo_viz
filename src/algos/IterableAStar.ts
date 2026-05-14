@@ -58,66 +58,70 @@ export class IterableAStar {
     this.visited[`${x},${y}`] = this.currentNode;
 
     const nextNode = this.awaitingVisit.dequeue();
-    if (nextNode) {
-      const nextPoint = nextNode.point;
-      this.currentNode = nextNode;
-      this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
-      this.currentNeighborsLength = this.currentNeighbors.length;
-      this.neighborIndex = 0;
-
-      return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
-    } else {
+    if (!nextNode) {
       return {
         point: this.currentNode.point,
         type: Algo.ActionType.NoMas,
         cost: null,
       };
     }
+
+    if (pointsEq(nextNode.point, this.end)) {
+      return {
+        point: nextNode.point,
+        type: Algo.ActionType.Found,
+        path: getPath(nextNode),
+        cost: nextNode.g,
+      };
+    }
+
+    const nextPoint = nextNode.point;
+    this.currentNode = nextNode;
+    this.currentNeighbors = this.getNeighbors(nextPoint.x, nextPoint.y);
+    this.currentNeighborsLength = this.currentNeighbors.length;
+    this.neighborIndex = 0;
+
+    return { point: nextPoint, type: Algo.ActionType.Visit, cost: null };
+  }
+
+  private stepCost(from: Point, to: Point): number {
+    return from.x !== to.x && from.y !== to.y ? Math.SQRT2 : 1;
   }
 
   next(): Algo.Tick {
     this.totalTicks += 1;
     while (this.neighborIndex < this.currentNeighborsLength) {
       const point = this.currentNeighbors[this.neighborIndex]!;
-
-      if (pointsEq(point, this.end)) {
-        const node: Algo.Node = {
-          point,
-          prev: this.currentNode,
-          value: this.currentNode.value + 1,
-        };
-
-        const path = getPath(node);
-
-        return { point, type: Algo.ActionType.Found, path, cost: node.value };
-      }
+      const prev = this.currentNode;
+      const stepCost = this.stepCost(prev.point, point);
 
       const { x, y } = point;
       this.neighborIndex += 1;
 
       const id = `${x},${y}`;
-      const visited = this.visited[id] != null;
-      const queued = this.awaitingVisit.has(id);
-      if (visited || queued) {
+      if (this.visited[id] != null) {
         continue;
       }
 
-      if (this.canEnterTile(x, y)) {
-        const prev = this.currentNode;
-        const g = prev.g + 1;
-        const h = this.heuristic(point, this.end);
-        const node: Node = {
-          point,
-          prev: this.currentNode,
-          g,
-          h,
-          value: g + h,
-        };
-
-        this.awaitingVisit.enqueue(`${x},${y}`, node);
-
-        return { point, type: Algo.ActionType.Enqueued, cost: node.value };
+      if (!pointsEq(point, this.end) && !this.canEnterTile(x, y)) {
+        continue;
       }
+
+      const g = prev.g + stepCost;
+      const existing = this.awaitingVisit.getThing(id);
+      if (existing && existing.g <= g) {
+        continue;
+      }
+      if (existing) {
+        this.awaitingVisit.remove(id);
+      }
+
+      const h = this.heuristic(point, this.end);
+      const node: Node = { point, prev, g, h, value: g + h };
+
+      this.awaitingVisit.enqueue(id, node);
+
+      return { point, type: Algo.ActionType.Enqueued, cost: node.value };
     }
 
     return this.visitNext();

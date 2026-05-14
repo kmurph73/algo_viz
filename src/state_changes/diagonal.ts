@@ -1,4 +1,4 @@
-import { euclideanDistance, manhattanDistance } from "../algos/algo_util.js";
+import { manhattanDistance, octileDistance } from "../algos/algo_util.js";
 import {
   getDiagonalNeighbors,
   getManhattanNeighbors,
@@ -17,7 +17,7 @@ export const changeDiagonal = (e: Event) => {
 
     if (!state.currentAlgo.isDijkstra()) {
       state.currentAlgo.heuristic = state.diagonal
-        ? euclideanDistance
+        ? octileDistance
         : manhattanDistance;
     }
   }

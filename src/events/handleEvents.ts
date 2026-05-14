@@ -23,11 +23,11 @@ export const assignHTMLElements = (): void => {
 
   html.diagonal = unwrap(
     document.getElementById("diagonal")
-  ) as HTMLSelectElement;
+  ) as HTMLInputElement;
 
   html.showCost = unwrap(
     document.getElementById("show_cost")
-  ) as HTMLSelectElement;
+  ) as HTMLInputElement;
 };
 
 export const attachEvents = (): void => {

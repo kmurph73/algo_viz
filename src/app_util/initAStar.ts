@@ -1,4 +1,4 @@
-import { euclideanDistance, manhattanDistance } from "../algos/algo_util.js";
+import { manhattanDistance, octileDistance } from "../algos/algo_util.js";
 import { IterableAStar } from "../algos/IterableAStar.js";
 import { grid, state } from "../constants.js";
 import {
@@ -17,6 +17,6 @@ export const initAStar = (): IterableAStar => {
     end,
     canEnterTile,
     getNeighbors: diagonal ? getDiagonalNeighbors : getManhattanNeighbors,
-    heuristic: diagonal ? euclideanDistance : manhattanDistance,
+    heuristic: diagonal ? octileDistance : manhattanDistance,
   });
 };
